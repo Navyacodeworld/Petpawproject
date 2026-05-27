@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Paw 🐾 — Vet Tracker</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="tracker-page">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">🐾 <span>Pet Paw</span></div>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="tracker.html" class="active"><i class="fas fa-syringe"></i> Vet Tracker</a></li>
+      <li><a href="profile.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+      <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+    <div class="sidebar-emergency">
+      <div class="emergency-card">
+        <p><i class="fas fa-phone-alt"></i> Emergency Vet</p>
+        <strong>+91-1800-123-4567</strong>
+        <small>24/7 Pet Hospital</small>
+        <a href="tel:+911800123456" class="emergency-btn"><i class="fas fa-phone"></i> Quick Call</a>
+      </div>
+    </div>
+  </nav>
+
+  <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <main class="main-content" id="mainContent">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="pet-avatar" id="topAvatar">🐾</div>
+        <div>
+          <h2>Vet & Vaccine Tracker 💉</h2>
+          <p class="topbar-sub">Keep your pet's health records organized</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="dark-toggle inline" id="darkToggle">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="dashboard.html" class="nav-pill"><i class="fas fa-home"></i> Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Add Record -->
+    <section class="dash-section fade-in">
+      <h3 class="section-title"><i class="fas fa-plus-circle"></i> Add Health Record</h3>
+      <div class="tracker-add-card glass-card">
+        <div class="tracker-form-row">
+          <div class="form-group">
+            <label>Record Type</label>
+            <select id="recType">
+              <option value="Rabies Vaccine">💉 Rabies Vaccine</option>
+              <option value="Deworming">🐛 Deworming</option>
+              <option value="Annual Checkup">🏥 Annual Checkup</option>
+              <option value="Flea Treatment">🦟 Flea Treatment</option>
+              <option value="Other">📋 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" id="recDate"/>
+          </div>
+          <div class="form-group">
+            <label>Notes (optional)</label>
+            <input type="text" id="recNotes" placeholder="e.g. Dr. Rao clinic"/>
+          </div>
+          <button class="glow-btn sm" onclick="addRecord()">
+            <i class="fas fa-plus"></i> Add
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Records Table -->
+    <section class="dash-section fade-in">
+      <h3 class="section-title"><i class="fas fa-clipboard-list"></i> Health Records</h3>
+      <div class="tracker-table-wrap">
+        <table class="tracker-table" id="trackerTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Due Date</th>
+              <th>Notes</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="trackerBody"></tbody>
+        </table>
+        <p class="no-records" id="noRecords" style="display:none">No records yet. Add one above! 🐾</p>
+      </div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="dash-section fade-in">
+      <h3 class="section-title"><i class="fas fa-chart-pie"></i> Summary</h3>
+      <div class="summary-cards" id="summaryCards"></div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    window.onload = () => {
+      initDarkMode();
+      const name = localStorage.getItem('petName') || 'Buddy';
+      const type = localStorage.getItem('petType') || 'dog';
+      const photo = localStorage.getItem('petPhoto');
+      if (photo) document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
+      else document.getElementById('topAvatar').textContent = type === 'dog' ? '🐶' : '🐱';
+      // Seed default records if empty
+      if (!localStorage.getItem('vetRecords')) {
+        const defaults = [
+          { id: Date.now()+1, type: 'Rabies Vaccine', date: '2025-03-15', notes: 'Annual booster', status: 'completed' },
+          { id: Date.now()+2, type: 'Deworming', date: '2025-06-01', notes: '', status: 'pending' },
+          { id: Date.now()+3, type: 'Annual Checkup', date: '2025-07-10', notes: 'Dr. Rao clinic', status: 'pending' },
+        ];
+        localStorage.setItem('vetRecords', JSON.stringify(defaults));
+      }
+      renderTable();
+    };
+
+    function getRecords() { return JSON.parse(localStorage.getItem('vetRecords') || '[]'); }
+    function saveRecords(r) { localStorage.setItem('vetRecords', JSON.stringify(r)); }
+
+    function addRecord() {
+      const type = document.getElementById('recType').value;
+      const date = document.getElementById('recDate').value;
+      const notes = document.getElementById('recNotes').value;
+      if (!date) { alert('Please select a due date!'); return; }
+      const records = getRecords();
+      records.push({ id: Date.now(), type, date, notes, status: 'pending' });
+      saveRecords(records);
+      document.getElementById('recDate').value = '';
+      document.getElementById('recNotes').value = '';
+      renderTable();
+    }
+
+    function markDone(id) {
+      const records = getRecords().map(r => r.id == id ? {...r, status: 'completed'} : r);
+      saveRecords(records);
+      renderTable();
+    }
+
+    function deleteRecord(id) {
+      const records = getRecords().filter(r => r.id != id);
+      saveRecords(records);
+      renderTable();
+    }
+
+    function renderTable() {
+      const records = getRecords();
+      const tbody = document.getElementById('trackerBody');
+      document.getElementById('noRecords').style.display = records.length ? 'none' : 'block';
+      tbody.innerHTML = records.map(r => `
+        <tr class="${r.status}">
+          <td>${r.type}</td>
+          <td>${r.date || '—'}</td>
+          <td>${r.notes || '—'}</td>
+          <td><span class="status-pill ${r.status}">${r.status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td>
+          <td>
+            ${r.status === 'pending' ? `<button class="mark-done-btn" onclick="markDone(${r.id})"><i class="fas fa-check"></i> Mark Done</button>` : ''}
+            <button class="del-btn" onclick="deleteRecord(${r.id})"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+
+      // Summary
+      const total = records.length;
+      const done = records.filter(r => r.status === 'completed').length;
+      const pending = total - done;
+      document.getElementById('summaryCards').innerHTML = `
+        <div class="sum-card blue"><div class="sum-icon">📋</div><div><strong>${total}</strong><span>Total Records</span></div></div>
+        <div class="sum-card green"><div class="sum-icon">✅</div><div><strong>${done}</strong><span>Completed</span></div></div>
+        <div class="sum-card orange"><div class="sum-icon">⏳</div><div><strong>${pending}</strong><span>Pending</span></div></div>
+      `;
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

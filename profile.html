@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Paw 🐾 — Setup Profile</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="profile-page">
+
+  <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="profile-container fade-in">
+    <div class="profile-card glass-card">
+
+      <!-- Progress Bar -->
+      <div class="progress-bar-wrap">
+        <div class="progress-steps">
+          <span class="step done">1</span>
+          <div class="step-line active"></div>
+          <span class="step active">2</span>
+          <div class="step-line"></div>
+          <span class="step">3</span>
+        </div>
+        <p class="progress-label">Step 2 of 3 — Pet Profile</p>
+      </div>
+
+      <div class="profile-header">
+        <div class="logo-sm">🐾</div>
+        <h2>Set Up Your Pet's Profile</h2>
+        <p>Tell us a bit about your furry friend!</p>
+      </div>
+
+      <!-- Photo Upload -->
+      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-preview" id="photoPreview">
+          <i class="fas fa-camera"></i>
+          <span>Upload Pet Photo</span>
+          <small>(optional)</small>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none"/>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Pet Type -->
+        <div class="form-group">
+          <label><i class="fas fa-paw"></i> Pet Type</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="petType" value="Dog"/> 🐶 Dog</label>
+            <label class="radio-pill"><input type="radio" name="petType" value="Cat"/> 🐱 Cat</label>
+          </div>
+        </div>
+
+        <!-- Experience Level -->
+        <div class="form-group">
+          <label><i class="fas fa-star"></i> Experience Level</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="experience" value="First-time parent"/> 🌱 First-time Parent</label>
+            <label class="radio-pill"><input type="radio" name="experience" value="Experienced"/> 🏅 Experienced</label>
+          </div>
+        </div>
+
+        <!-- Age Group -->
+        <div class="form-group">
+          <label><i class="fas fa-birthday-cake"></i> Age Group</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="age" value="Puppy/Kitten"/> 🍼 Puppy/Kitten (&lt;1yr)</label>
+            <label class="radio-pill"><input type="radio" name="age" value="Adult"/> 🐕 Adult (1–7 yrs)</label>
+            <label class="radio-pill"><input type="radio" name="age" value="Senior"/> 🧓 Senior (7+ yrs)</label>
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+          <label><i class="fas fa-venus-mars"></i> Gender</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="gender" value="Male"/> ♂ Male</label>
+            <label class="radio-pill"><input type="radio" name="gender" value="Female"/> ♀ Female</label>
+          </div>
+        </div>
+
+        <!-- Favorite Activity -->
+        <div class="form-group full-width">
+          <label><i class="fas fa-gamepad"></i> Favorite Activity</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="activity" value="Playing"/> 🎾 Playing</label>
+            <label class="radio-pill"><input type="radio" name="activity" value="Sleeping"/> 😴 Sleeping</label>
+            <label class="radio-pill"><input type="radio" name="activity" value="Running"/> 🏃 Running</label>
+            <label class="radio-pill"><input type="radio" name="activity" value="Cuddling"/> 🤗 Cuddling</label>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="glow-btn wide" onclick="saveProfile()">
+        <i class="fas fa-save"></i> Save Profile & Continue
+      </button>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Pre-fill pet type from index
+    const storedType = localStorage.getItem('petType');
+    if (storedType) {
+      const radios = document.querySelectorAll('input[name="petType"]');
+      radios.forEach(r => { if (r.value.toLowerCase() === storedType) r.checked = true; });
+    }
+
+    // Photo preview
+    document.getElementById('photoInput').addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = document.getElementById('photoPreview');
+        preview.innerHTML = `<img src="${e.target.result}" alt="Pet Photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+        localStorage.setItem('petPhoto', e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function saveProfile() {
+      const getRadio = name => {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? el.value : '';
+      };
+      const petType = getRadio('petType');
+      const experience = getRadio('experience');
+      const age = getRadio('age');
+      const gender = getRadio('gender');
+      const activity = getRadio('activity');
+
+      if (!petType || !experience || !age || !gender || !activity) {
+        alert('Please fill in all fields! 🐾'); return;
+      }
+      localStorage.setItem('petTypeProfile', petType);
+      localStorage.setItem('experience', experience);
+      localStorage.setItem('ageGroup', age);
+      localStorage.setItem('gender', gender);
+      localStorage.setItem('activity', activity);
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Paw 🐾 — Welcome</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="welcome-page">
+
+  <!-- Floating paw prints -->
+  <div class="paw-float paw-1">🐾</div>
+  <div class="paw-float paw-2">🐾</div>
+  <div class="paw-float paw-3">🐾</div>
+  <div class="paw-float paw-4">🐾</div>
+  <div class="paw-float paw-5">🐾</div>
+
+  <!-- Dark mode toggle -->
+  <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Hero Section -->
+  <div class="welcome-overlay">
+    <div class="welcome-content fade-in">
+      <h1 class="welcome-title">Welcome to <span>Pet Paw🐾</span></h1>
+      <p class="welcome-tagline">Because every pet deserves love and care.</p>
+
+      <div class="welcome-card">
+        <div class="input-group">
+          <label for="petName"><i class="fas fa-paw"></i> What's your pet's name?</label>
+          <input type="text" id="petName" placeholder="e.g. Bruno, Luna, Max..." maxlength="30"/>
+        </div>
+
+        <div class="pet-type-group">
+          <p class="type-label">Choose your pet:</p>
+          <div class="pet-cards">
+            <div class="pet-card" id="dogCard" onclick="selectPet('dog')">
+              <div class="pet-emoji">🐶</div>
+              <span>Dog</span>
+            </div>
+            <div class="pet-card" id="catCard" onclick="selectPet('cat')">
+              <div class="pet-emoji">🐱</div>
+              <span>Cat</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="glow-btn" onclick="startCaring()">
+          <i class="fas fa-heart"></i> Start Caring
+        </button>
+        <button class="glow-btn" onclick="window.location.href='sample.html'">
+          <i class="fas fa-heart"></i> Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let selectedPet = '';
+    function selectPet(type) {
+      selectedPet = type;
+      document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById(type + 'Card').classList.add('selected');
+    }
+    function startCaring() {
+      const name = document.getElementById('petName').value.trim();
+      if (!name) { alert('Please enter your pet\'s name! 🐾'); return; }
+      if (!selectedPet) { alert('Please choose Dog or Cat! 🐾'); return; }
+      localStorage.setItem('petName', name);
+      localStorage.setItem('petType', selectedPet);
+      window.location.href = 'profile.html';
+    }
+  </script>
+</body>
+</html>
