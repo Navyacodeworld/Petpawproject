@@ -56,38 +56,104 @@
     <div class="dashboard-grid">
       <!-- Training Checklist -->
       <section class="dash-section fade-in" style="animation-delay: 0.1s;">
-        <h3 class="section-title"><i class="fas fa-medal"></i> Mastered Commands</h3>
-        <div class="checklist-card">
-          <div class="checklist-progress-wrap">
-            <div class="checklist-progress-bar">
-              <div class="checklist-progress-fill" style="width: 40%"></div>
-            </div>
-            <span class="progress-pct">40% Mastered</span>
-          </div>
-          <ul class="checklist">
-            <li class="done"><label><input type="checkbox" checked disabled/> <span><i class="fas fa-check-circle" style="color:#2E7D32"></i> Sit</span></label></li>
-            <li class="done"><label><input type="checkbox" checked disabled/> <span><i class="fas fa-check-circle" style="color:#2E7D32"></i> Stay</span></label></li>
-            <li><label><input type="checkbox"/> <span><i class="fas fa-circle-notch" style="color:#FF9800"></i> Come</span></label></li>
-            <li><label><input type="checkbox"/> <span><i class="fas fa-circle-notch" style="color:#FF9800"></i> Down</span></label></li>
-            <li><label><input type="checkbox"/> <span><i class="fas fa-circle-notch" style="color:#FF9800"></i> Heel</span></label></li>
-          </ul>
-        </div>
-      </section>
+  <h3 class="section-title"><i class="fas fa-medal"></i> Mastered Commands</h3>
+  <div class="checklist-card">
+    <div class="checklist-progress-wrap">
+      <div class="checklist-progress-bar">
+        <div class="checklist-progress-fill" id="progressFill" style="width: 0%;"></div>
+      </div>
+      <span class="progress-pct" id="progressPct">0% Mastered</span>
+    </div>
+    <ul class="checklist" id="checklist">
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateChecklist()"/>
+          <span><i class="fas fa-circle-notch" id="icon-0" style="color:#FF9800"></i> Sit</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateChecklist()"/>
+          <span><i class="fas fa-circle-notch" id="icon-1" style="color:#FF9800"></i> Stay</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateChecklist()"/>
+          <span><i class="fas fa-circle-notch" id="icon-2" style="color:#FF9800"></i> Come</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateChecklist()"/>
+          <span><i class="fas fa-circle-notch" id="icon-3" style="color:#FF9800"></i> Down</span>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="checkbox" onchange="updateChecklist()"/>
+          <span><i class="fas fa-circle-notch" id="icon-4" style="color:#FF9800"></i> Heel</span>
+        </label>
+      </li>
+    </ul>
+  </div>
+</section>
 
-      <!-- Video Tips -->
-      <section class="dash-section fade-in" style="animation-delay: 0.2s;">
-        <h3 class="section-title"><i class="fas fa-play-circle"></i> Featured Tutorial</h3>
-        <div class="tracker-add-card glass-card" style="text-align: center;">
-          <div style="background: #000; height: 180px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-            <i class="fas fa-play" style="font-size: 3rem; color: rgba(255,255,255,0.8); cursor: pointer;"></i>
-          </div>
-          <h4 style="font-family: 'Fredoka'; margin-bottom: 8px;">How to teach "Stay" in 5 minutes</h4>
-          <p style="font-size: 0.85rem; color: var(--text-light);">Positive reinforcement is key. Use high-value treats and keep sessions under 10 minutes to avoid frustration.</p>
+  
+    <!-- Video Tips -->
+       <section class="dash-section fade-in" style="animation-delay: 0.2s;">
+  <h3 class="section-title"><i class="fas fa-play-circle"></i> Featured Tutorial</h3>
+  <div class="tracker-add-card glass-card" style="text-align: center;">
+
+    <!-- Video thumbnail with play button overlay -->
+    <div id="videoThumb" 
+      onclick="playVideo()"
+      style="position: relative; background: #000; height: 180px; border-radius: 12px; 
+             overflow: hidden; margin-bottom: 16px; cursor: pointer;">
+      
+      <!-- YouTube thumbnail image -->
+      <img 
+      src="https://img.youtube.com/vi/Z7TPJtpQSiQ/hqdefault.jpg" 
+        alt="Tutorial thumbnail"
+        style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;"
+      />
+
+      <!-- Play button overlay -->
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; 
+                  justify-content: center;">
+        <div style="background: rgba(0,0,0,0.6); border-radius: 50%; 
+                    width: 60px; height: 60px; display: flex; 
+                    align-items: center; justify-content: center;">
+          <i class="fas fa-play" style="font-size: 1.6rem; color: #fff; margin-left: 4px;"></i>
         </div>
-      </section>
+      </div>
     </div>
 
-    <!-- Command Library -->
+    <!-- YouTube iframe (hidden until play is clicked) -->
+    <div id="videoPlayer" style="display: none; margin-bottom: 16px;">
+      <iframe 
+        id="ytIframe"
+        width="100%" 
+        height="215" 
+        src="" 
+        title="How to teach Stay in 5 minutes"
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        style="border-radius: 12px;">
+      </iframe>
+    </div>
+
+    <h4 style="font-family: 'Fredoka'; margin-bottom: 8px;">How to teach "Stay" in 5 minutes</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light);">
+      Positive reinforcement is key. Use high-value treats and keep sessions under 
+      10 minutes to avoid frustration.
+    </p>
+
+  </div>
+</section>
+  
+<!-- Command Library -->
     <section class="dash-section fade-in" style="animation-delay: 0.3s;">
       <h3 class="section-title"><i class="fas fa-book"></i> Command Library</h3>
       <div class="health-grid">
@@ -113,17 +179,44 @@
 
   <script src="script.js"></script>
   <script>
-    window.onload = () => {
-      initDarkMode();
-      const type = localStorage.getItem('petType') || 'dog';
-      const photo = localStorage.getItem('petPhoto');
-      if (photo) document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
-      else document.getElementById('topAvatar').innerHTML = type === 'dog' ? '<i class="fas fa-dog"></i>' : '<i class="fas fa-cat"></i>';
-    };
+    function updateChecklist() {
+    const list = document.getElementById('checklist');
+    const items = list.querySelectorAll('li');
+    const checkboxes = list.querySelectorAll('input[type=checkbox]');
+    let checked = 0;
 
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-    }
+    checkboxes.forEach((cb, i) => {
+      const icon = document.getElementById('icon-' + i);
+      if (cb.checked) {
+        checked++;
+        items[i].classList.add('done');
+        icon.classList.remove('fa-circle-notch');
+        icon.classList.add('fa-check-circle');
+        icon.style.color = '#2E7D32';
+      } else {
+        items[i].classList.remove('done');
+        icon.classList.remove('fa-check-circle');
+        icon.classList.add('fa-circle-notch');
+        icon.style.color = '#FF9800';
+      }
+    });
+
+    const pct = Math.round((checked / checkboxes.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '% Mastered';
+  }
+
+  // Run once on load to set initial state
+  updateChecklist();
   </script>
+  <script>
+  function playVideo() {
+  document.getElementById('videoThumb').style.display = 'none';
+  document.getElementById('videoPlayer').style.display = 'block';
+
+  document.getElementById('ytIframe').src = 
+    'https://www.youtube.com/embed/Z7TPJtpQSiQ?autoplay=1&rel=0';  
+}
+</script>
 </body>
 </html>
