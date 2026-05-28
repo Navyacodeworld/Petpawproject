@@ -3,149 +3,894 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Paw 🐾 — Setup Profile</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>Pet Paw — Setup Profile</title>
+  <meta name="description" content="Set up your pet's profile on Pet Paw. Tell us about your furry friend to get personalized care recommendations."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-pastel: #FFB7B2;
+      --secondary-pastel: #BFFCC6;
+      --accent-pastel: #FFDAC1;
+      --dark-cream: #6D5957;
+      --white-alpha: rgba(255, 255, 255, 0.85);
+      --blur-strength: 12px;
+      --pink: #FFB5C8;
+      --pink-dark: #FF8FAB;
+      --brown: #C8956C;
+      --brown-dark: #A0714F;
+      --text: #3D2C2C;
+      --text-light: #7A6060;
+      --border: #EEDDD0;
+      --card-bg: #FFFBF7;
+      --cream: #FFF8F0;
+      --white: #FFFFFF;
+      --light-gray: #F3F3F3;
+      --shadow: 0 8px 32px rgba(200,149,108,0.13);
+      --shadow-sm: 0 4px 16px rgba(200,149,108,0.10);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --transition: 0.3s ease;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #FDE9D9 0%, #FCE4EC 50%, #E3F2FD 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* ===== FLOATING GLASSMORPHISM NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1200px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 40px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(109, 89, 87, 0.08);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .navbar.scrolled {
+      top: 10px;
+      padding: 10px 35px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 35px rgba(109, 89, 87, 0.12);
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      gap: 10px;
+    }
+
+    .navbar-logo img {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      transition: transform 0.3s;
+    }
+
+    .navbar-logo:hover img {
+      transform: scale(1.08) rotate(-3deg);
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .navbar-links a {
+      color: var(--dark-cream);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 8px 20px;
+      border-radius: 30px;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+    }
+
+    .navbar-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: var(--primary-pastel);
+      border-radius: 2px;
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    .navbar-links a:hover::after { width: 18px; }
+
+    .navbar-links a:hover {
+      color: #ff9e96;
+      background: rgba(255, 183, 178, 0.08);
+    }
+
+    .navbar-links a.nav-login {
+      background: var(--primary-pastel);
+      color: var(--dark-cream) !important;
+      box-shadow: 0 4px 14px rgba(255, 183, 178, 0.35);
+      font-weight: 700;
+    }
+
+    .navbar-links a.nav-login::after { display: none; }
+
+    .navbar-links a.nav-login:hover {
+      background: #ff9e96;
+      color: #fff !important;
+      box-shadow: 0 6px 18px rgba(255, 183, 178, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 16px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2.5px;
+      background: var(--dark-cream);
+      border-radius: 2px;
+      transition: all 0.3s ease-in-out;
+      transform-origin: left center;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg); }
+    .hamburger.open span:nth-child(2) { width: 0%; opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg); }
+
+    .mobile-menu {
+      position: fixed;
+      top: 95px;
+      left: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 24px;
+      z-index: 999;
+      box-shadow: 0 16px 40px rgba(109, 89, 87, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid rgba(255, 183, 178, 0.2);
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .mobile-menu a {
+      color: var(--dark-cream);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 12px 18px;
+      border-radius: 14px;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-menu a:hover { background: rgba(255, 183, 178, 0.12); color: #ff9e96; }
+
+    .mobile-menu a.nav-login {
+      background: var(--primary-pastel);
+      color: var(--dark-cream) !important;
+      justify-content: center;
+      border-radius: 50px;
+    }
+
+    /* ===== PAGE LAYOUT ===== */
+    .profile-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 110px 24px 60px;
+    }
+
+    .profile-container {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .profile-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid var(--border);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(109, 89, 87, 0.12);
+      padding: 36px 56px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== PROGRESS STEPS ===== */
+    .progress-bar-wrap { margin-bottom: 16px; }
+
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 10px;
+      justify-content: center;
+    }
+
+    .step {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      color: var(--text-light);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      border: 2.5px solid var(--border);
+      z-index: 1;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .step.done {
+      background: var(--brown);
+      color: white;
+      border-color: var(--brown);
+      box-shadow: 0 4px 12px rgba(200, 149, 108, 0.4);
+    }
+
+    .step.done::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 0.8rem;
+    }
+
+    .step.done span { display: none; }
+
+    .step.active {
+      background: linear-gradient(135deg, var(--pink-dark), var(--brown));
+      color: white;
+      border-color: var(--pink-dark);
+      box-shadow: 0 4px 14px rgba(255, 143, 171, 0.4);
+    }
+
+    .step-line {
+      height: 3px;
+      width: 90px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .step-line.active {
+      background: linear-gradient(to right, var(--brown), var(--pink-dark));
+    }
+
+    .progress-label {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* ===== HEADER + PHOTO ROW ===== */
+    .header-photo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    /* ===== PROFILE HEADER ===== */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      text-align: left;
+    }
+
+    .profile-logo-icon {
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      background: linear-gradient(135deg, var(--pink-dark), var(--brown));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(255, 143, 171, 0.35);
+    }
+
+    .profile-logo-icon i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .profile-header-text h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.75rem;
+      color: var(--text);
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+
+    .profile-header-text p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* ===== PHOTO UPLOAD ===== */
+    .photo-upload-area {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 3px dashed var(--brown);
+      margin: 0;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(200, 149, 108, 0.06);
+      position: relative;
+    }
+
+    .photo-upload-area:hover {
+      border-color: var(--pink-dark);
+      transform: scale(1.06);
+      box-shadow: 0 8px 24px rgba(255, 143, 171, 0.2);
+    }
+
+    .photo-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-light);
+      font-size: 0.78rem;
+      gap: 5px;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .photo-preview i {
+      font-size: 2rem;
+      color: var(--brown);
+      margin-bottom: 2px;
+    }
+
+    .photo-upload-label {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-top: -18px;
+      margin-bottom: 28px;
+    }
+
+    /* ===== FORM GRID ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 12px; }
+
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group.two-col { grid-column: span 2; }
+
+    .form-group label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .form-group label i {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    /* ===== RADIO PILLS ===== */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border: 2px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-light);
+      transition: all var(--transition);
+      user-select: none;
+      background: var(--white);
+    }
+
+    .radio-pill:hover {
+      border-color: var(--pink-dark);
+      color: var(--pink-dark);
+      background: rgba(255, 143, 171, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .radio-pill input[type=radio] {
+      accent-color: var(--pink-dark);
+      width: 14px;
+      height: 14px;
+    }
+
+    .radio-pill:has(input:checked) {
+      border-color: var(--brown);
+      background: linear-gradient(135deg, rgba(200,149,108,0.08), rgba(255,143,171,0.08));
+      color: var(--brown);
+      box-shadow: 0 2px 10px rgba(200, 149, 108, 0.2);
+    }
+
+    .radio-pill .pill-icon {
+      font-size: 0.85rem;
+      color: var(--brown);
+    }
+
+    /* ===== SAVE BUTTON ===== */
+    .save-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--pink-dark), var(--brown));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 36px;
+      font-size: 1.05rem;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(255, 143, 171, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .save-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      transition: left 0.4s ease;
+    }
+
+    .save-btn:hover::before { left: 100%; }
+
+    .save-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(255, 143, 171, 0.45);
+    }
+
+    .save-btn:active { transform: translateY(-1px); }
+
+    /* ===== DIVIDER ===== */
+    .form-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 4px 0 12px;
+    }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-light);
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .form-group.two-col { grid-column: span 2; }
+      .profile-card { padding: 44px 40px; }
+    }
+
+    @media (max-width: 768px) {
+      .navbar-links { display: none; }
+      .hamburger { display: flex; }
+
+      .profile-card { padding: 32px 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full-width,
+      .form-group.two-col { grid-column: 1; }
+      .step-line { width: 60px; }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        width: calc(100% - 24px);
+        padding: 8px 16px;
+      }
+      .profile-card { padding: 28px 18px; }
+      .profile-header h2 { font-size: 1.5rem; }
+    }
+  </style>
 </head>
-<body class="profile-page">
+<body>
 
-  <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
-    <i class="fas fa-moon"></i>
-  </button>
+  <!-- ===== GLASSMORPHISM STICKY NAVBAR ===== -->
+  <nav class="navbar" id="mainNavbar">
+    <a href="index.html" class="navbar-logo">
+      <img src="pet_logo.png" alt="Pet Paw Logo">
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html" class="nav-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
 
-  <div class="profile-container fade-in">
-    <div class="profile-card glass-card">
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="index.html#about" onclick="toggleMenu()"><i class="fa-solid fa-paw"></i> About</a>
+    <a href="index.html#services" onclick="toggleMenu()"><i class="fa-solid fa-hand-holding-heart"></i> Services</a>
+    <a href="index.html#contact" onclick="toggleMenu()"><i class="fa-solid fa-envelope"></i> Contact</a>
+    <a href="login.html" class="nav-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+  </div>
 
-      <!-- Progress Bar -->
-      <div class="progress-bar-wrap">
-        <div class="progress-steps">
-          <span class="step done">1</span>
-          <div class="step-line active"></div>
-          <span class="step active">2</span>
-          <div class="step-line"></div>
-          <span class="step">3</span>
+  <!-- ===== PROFILE PAGE ===== -->
+  <div class="profile-page-wrapper">
+    <div class="profile-container">
+      <div class="profile-card">
+
+        <!-- Progress Steps -->
+        <div class="progress-bar-wrap">
+          <div class="progress-steps">
+            <span class="step done"><span>1</span></span>
+            <div class="step-line active"></div>
+            <span class="step active">2</span>
+            <div class="step-line"></div>
+            <span class="step">3</span>
+          </div>
+          <p class="progress-label">Step 2 of 3 — Pet Profile Setup</p>
         </div>
-        <p class="progress-label">Step 2 of 3 — Pet Profile</p>
+
+        <!-- Header + Photo in same row -->
+        <div class="header-photo-row">
+
+          <div class="profile-header">
+            <div class="profile-logo-icon">
+              <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="profile-header-text">
+              <h2>Set Up Your Pet's Profile</h2>
+              <p>Tell us a bit about your furry friend so we can personalise their experience.</p>
+            </div>
+          </div>
+
+          <!-- Photo Upload -->
+          <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('photoInput').click()" title="Upload pet photo">
+            <div class="photo-preview" id="photoPreview">
+              <i class="fas fa-camera"></i>
+              <span>Upload Photo</span>
+              <small style="opacity:0.7">(optional)</small>
+            </div>
+            <input type="file" id="photoInput" accept="image/*" style="display:none"/>
+          </div>
+
+        </div>
+
+        <div class="form-divider"></div>
+
+        <!-- Form -->
+        <div class="form-grid">
+
+          <!-- Pet Type -->
+          <div class="form-group">
+            <label><i class="fas fa-paw"></i> Pet Type</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="petType" value="Dog"/>
+                <i class="fa-solid fa-dog pill-icon"></i> Dog
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="petType" value="Cat"/>
+                <i class="fa-solid fa-cat pill-icon"></i> Cat
+              </label>
+            </div>
+          </div>
+
+          <!-- Experience Level -->
+          <div class="form-group">
+            <label><i class="fas fa-star"></i> Experience Level</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="experience" value="First-time parent"/>
+                <i class="fa-solid fa-seedling pill-icon"></i> First-time Parent
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="experience" value="Experienced"/>
+                <i class="fa-solid fa-medal pill-icon"></i> Experienced
+              </label>
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group">
+            <label><i class="fas fa-venus-mars"></i> Gender</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="gender" value="Male"/>
+                <i class="fa-solid fa-mars pill-icon"></i> Male
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="gender" value="Female"/>
+                <i class="fa-solid fa-venus pill-icon"></i> Female
+              </label>
+            </div>
+          </div>
+
+          <!-- Age Group -->
+          <div class="form-group">
+            <label><i class="fas fa-birthday-cake"></i> Age Group</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="age" value="Puppy/Kitten"/>
+                <i class="fa-solid fa-baby pill-icon"></i> Puppy/Kitten (&lt;1yr)
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="age" value="Adult"/>
+                <i class="fa-solid fa-dog pill-icon"></i> Adult (1–7 yrs)
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="age" value="Senior"/>
+                <i class="fa-solid fa-heart pill-icon"></i> Senior (7+ yrs)
+              </label>
+            </div>
+          </div>
+
+          <!-- Favorite Activity -->
+          <div class="form-group full-width">
+            <label><i class="fas fa-gamepad"></i> Favorite Activity</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input type="radio" name="activity" value="Playing"/>
+                <i class="fa-solid fa-baseball pill-icon"></i> Playing
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="activity" value="Sleeping"/>
+                <i class="fa-solid fa-moon pill-icon"></i> Sleeping
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="activity" value="Running"/>
+                <i class="fa-solid fa-person-running pill-icon"></i> Running
+              </label>
+              <label class="radio-pill">
+                <input type="radio" name="activity" value="Cuddling"/>
+                <i class="fa-solid fa-hand-holding-heart pill-icon"></i> Cuddling
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Save Button -->
+        <button class="save-btn" id="saveProfileBtn" onclick="saveProfile()">
+          <i class="fas fa-arrow-right"></i> Save Profile &amp; Continue
+        </button>
+
       </div>
-
-      <div class="profile-header">
-        <div class="logo-sm">🐾</div>
-        <h2>Set Up Your Pet's Profile</h2>
-        <p>Tell us a bit about your furry friend!</p>
-      </div>
-
-      <!-- Photo Upload -->
-      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
-        <div class="photo-preview" id="photoPreview">
-          <i class="fas fa-camera"></i>
-          <span>Upload Pet Photo</span>
-          <small>(optional)</small>
-        </div>
-        <input type="file" id="photoInput" accept="image/*" style="display:none"/>
-      </div>
-
-      <div class="form-grid">
-
-        <!-- Pet Type -->
-        <div class="form-group">
-          <label><i class="fas fa-paw"></i> Pet Type</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="petType" value="Dog"/> 🐶 Dog</label>
-            <label class="radio-pill"><input type="radio" name="petType" value="Cat"/> 🐱 Cat</label>
-          </div>
-        </div>
-
-        <!-- Experience Level -->
-        <div class="form-group">
-          <label><i class="fas fa-star"></i> Experience Level</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="experience" value="First-time parent"/> 🌱 First-time Parent</label>
-            <label class="radio-pill"><input type="radio" name="experience" value="Experienced"/> 🏅 Experienced</label>
-          </div>
-        </div>
-
-        <!-- Age Group -->
-        <div class="form-group">
-          <label><i class="fas fa-birthday-cake"></i> Age Group</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="age" value="Puppy/Kitten"/> 🍼 Puppy/Kitten (&lt;1yr)</label>
-            <label class="radio-pill"><input type="radio" name="age" value="Adult"/> 🐕 Adult (1–7 yrs)</label>
-            <label class="radio-pill"><input type="radio" name="age" value="Senior"/> 🧓 Senior (7+ yrs)</label>
-          </div>
-        </div>
-
-        <!-- Gender -->
-        <div class="form-group">
-          <label><i class="fas fa-venus-mars"></i> Gender</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="gender" value="Male"/> ♂ Male</label>
-            <label class="radio-pill"><input type="radio" name="gender" value="Female"/> ♀ Female</label>
-          </div>
-        </div>
-
-        <!-- Favorite Activity -->
-        <div class="form-group full-width">
-          <label><i class="fas fa-gamepad"></i> Favorite Activity</label>
-          <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="activity" value="Playing"/> 🎾 Playing</label>
-            <label class="radio-pill"><input type="radio" name="activity" value="Sleeping"/> 😴 Sleeping</label>
-            <label class="radio-pill"><input type="radio" name="activity" value="Running"/> 🏃 Running</label>
-            <label class="radio-pill"><input type="radio" name="activity" value="Cuddling"/> 🤗 Cuddling</label>
-          </div>
-        </div>
-
-      </div>
-
-      <button class="glow-btn wide" onclick="saveProfile()">
-        <i class="fas fa-save"></i> Save Profile & Continue
-      </button>
-
     </div>
   </div>
 
-  <script src="script.js"></script>
   <script>
-    // Pre-fill pet type from index
-    const storedType = localStorage.getItem('petType');
-    if (storedType) {
-      const radios = document.querySelectorAll('input[name="petType"]');
-      radios.forEach(r => { if (r.value.toLowerCase() === storedType) r.checked = true; });
+    // =====================================================
+    //   PET PAW — PROFILE AUTH + SAVE
+    // =====================================================
+    const DB_KEY   = 'petpaw_users';
+    const SESS_KEY = 'petpaw_session';
+
+    function getUsers()       { return JSON.parse(localStorage.getItem(DB_KEY) || '[]'); }
+    function saveUsers(u)     { localStorage.setItem(DB_KEY, JSON.stringify(u)); }
+    function getCurrentUser() {
+      const email = localStorage.getItem(SESS_KEY);
+      if (!email) return null;
+      return getUsers().find(u => u.email === email) || null;
     }
 
-    // Photo preview
-    document.getElementById('photoInput').addEventListener('change', function() {
+    /* ===== SESSION GUARD ===== */
+    (function guard() {
+      const user = getCurrentUser();
+      if (!user) { window.location.href = 'login.html'; }
+    })();
+
+    /* ===== NAVBAR SCROLL ===== */
+    const navbar = document.getElementById('mainNavbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const ham  = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      ham.classList.toggle('open');
+    }
+
+    /* ===== PRE-FILL EXISTING PROFILE DATA ===== */
+    (function prefill() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      // Pre-fill petType from registration
+      const petType = user.petType || localStorage.getItem('petType');
+      if (petType) {
+        document.querySelectorAll('input[name="petType"]').forEach(r => {
+          if (r.value.toLowerCase() === petType.toLowerCase()) r.checked = true;
+        });
+      }
+
+      // Pre-fill saved profile fields if editing
+      if (user.profile) {
+        const p = user.profile;
+        ['experience', 'age', 'gender', 'activity'].forEach(name => {
+          if (p[name]) {
+            document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+              if (r.value === p[name]) r.checked = true;
+            });
+          }
+        });
+      }
+
+      // Restore photo if already uploaded
+      const photo = user.petPhoto || localStorage.getItem('petPhoto');
+      if (photo) {
+        const preview = document.getElementById('photoPreview');
+        preview.innerHTML = `<img src="${photo}" alt="Pet Photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+      }
+    })();
+
+    /* ===== PHOTO UPLOAD ===== */
+    document.getElementById('photoInput').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
+      // Warn if file is too large for localStorage (> 1MB)
+      if (file.size > 1024 * 1024) {
+        alert('Photo is too large. Please use an image under 1MB.');
+        return;
+      }
       const reader = new FileReader();
       reader.onload = e => {
         const preview = document.getElementById('photoPreview');
         preview.innerHTML = `<img src="${e.target.result}" alt="Pet Photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
-        localStorage.setItem('petPhoto', e.target.result);
+        // Store temporarily; will be saved to user record on Save
+        localStorage.setItem('petPhoto_temp', e.target.result);
       };
       reader.readAsDataURL(file);
     });
 
+    /* ===== SAVE PROFILE ===== */
     function saveProfile() {
       const getRadio = name => {
         const el = document.querySelector(`input[name="${name}"]:checked`);
         return el ? el.value : '';
       };
-      const petType = getRadio('petType');
+
+      const petType    = getRadio('petType');
       const experience = getRadio('experience');
-      const age = getRadio('age');
-      const gender = getRadio('gender');
-      const activity = getRadio('activity');
+      const age        = getRadio('age');
+      const gender     = getRadio('gender');
+      const activity   = getRadio('activity');
 
       if (!petType || !experience || !age || !gender || !activity) {
-        alert('Please fill in all fields! 🐾'); return;
+        alert('Please fill in all fields before continuing.');
+        return;
       }
+
+      const email = localStorage.getItem(SESS_KEY);
+      const users = getUsers();
+      const idx   = users.findIndex(u => u.email === email);
+
+      if (idx === -1) {
+        alert('Session expired. Please login again.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Save profile data into user record
+      const photo = localStorage.getItem('petPhoto_temp') || users[idx].petPhoto || '';
+
+      users[idx].profileComplete = true;
+      users[idx].petPhoto = photo;
+      users[idx].profile  = { petType, experience, age, gender, activity };
+      saveUsers(users);
+
+      // Also keep shorthand keys for dashboard.html compatibility
       localStorage.setItem('petTypeProfile', petType);
       localStorage.setItem('experience', experience);
       localStorage.setItem('ageGroup', age);
       localStorage.setItem('gender', gender);
       localStorage.setItem('activity', activity);
-      window.location.href = 'dashboard.html';
+      if (photo) localStorage.setItem('petPhoto', photo);
+      localStorage.removeItem('petPhoto_temp');
+
+      const btn = document.getElementById('saveProfileBtn');
+      btn.innerHTML = '<i class="fas fa-check"></i> Saved! Redirecting...';
+      btn.style.background = 'linear-gradient(135deg, #4caf50, #388e3c)';
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
     }
   </script>
 </body>

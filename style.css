@@ -593,3 +593,39 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
   .pet-cards { gap: 10px; }
   .welcome-card { padding: 24px 18px; }
 }
+
+/* ---- WELCOME & LOGIN ENHANCEMENTS ---- */
+.welcome-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.back-link {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: var(--brown);
+  transform: translateX(-3px);
+}
+
+.pet-emoji i {
+  font-size: 2.6rem;
+  transition: transform var(--transition);
+  display: inline-block;
+}
+
+.pet-card:hover .pet-emoji i {
+  transform: scale(1.15) rotate(5deg);
+}

@@ -17,7 +17,7 @@
       <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="tracker.html"><i class="fas fa-syringe"></i> Vet Tracker</a></li>
       <li><a href="profile.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
-      <li><a href="index.html" onclick="sessionStorage.removeItem('checklistSession')"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
     <div class="sidebar-emergency">
       <div class="emergency-card">
@@ -185,20 +185,48 @@
 
   <script src="script.js"></script>
   <script>
+    // =====================================================
+    //   PET PAW — DASHBOARD AUTH + INIT
+    // =====================================================
+    const DB_KEY   = 'petpaw_users';
+    const SESS_KEY = 'petpaw_session';
+
+    function getUsers()       { return JSON.parse(localStorage.getItem(DB_KEY) || '[]'); }
+    function getCurrentUser() {
+      const email = localStorage.getItem(SESS_KEY);
+      if (!email) return null;
+      return getUsers().find(u => u.email === email) || null;
+    }
+
+    /* ===== SESSION GUARD ===== */
+    (function guard() {
+      const user = getCurrentUser();
+      if (!user) { window.location.href = 'login.html'; return; }
+      if (!user.profileComplete) { window.location.href = 'profile.html'; }
+    })();
+
+    /* ===== LOGOUT ===== */
+    function logout() {
+      localStorage.removeItem(SESS_KEY);      // Clear session only
+      sessionStorage.removeItem('checklistSession');
+      window.location.href = 'login.html';
+    }
+
     // Greet user
     window.onload = () => {
       initDarkMode();
-      const name = localStorage.getItem('petName') || 'Buddy';
-      const type = localStorage.getItem('petType') || 'dog';
-      const photo = localStorage.getItem('petPhoto');
-      const hour = new Date().getHours();
+      const user  = getCurrentUser();
+      const name  = (user && user.petName) || localStorage.getItem('petName') || 'Buddy';
+      const type  = (user && user.petType) || localStorage.getItem('petType') || 'dog';
+      const photo = (user && user.petPhoto) || localStorage.getItem('petPhoto');
+      const hour  = new Date().getHours();
       const greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-      document.getElementById('greetingMsg').textContent = `${greet}, ${name}! 🐾`;
-      document.getElementById('topSub').textContent = `${type === 'dog' ? '🐶 Dog' : '🐱 Cat'} parent dashboard`;
+      document.getElementById('greetingMsg').textContent = `${greet}, ${name}!`;
+      document.getElementById('topSub').textContent = `${type === 'dog' ? 'Dog' : 'Cat'} parent dashboard`;
       if (photo) {
         document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
       } else {
-        document.getElementById('topAvatar').textContent = type === 'dog' ? '🐶' : '🐱';
+        document.getElementById('topAvatar').textContent = type === 'dog' ? '\uD83D\uDC36' : '\uD83D\uDC31';
       }
       loadChecklist();
       showTip();

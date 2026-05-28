@@ -1,79 +1,1701 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Paw 🐾 — Welcome</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pet Paw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-pastel: #FFB7B2;
+            --secondary-pastel: #BFFCC6;
+            --accent-pastel: #FFDAC1;
+            --dark-cream: #6D5957;
+            --white-alpha: rgba(255, 255, 255, 0.85);
+            --blur-strength: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #f7f5f0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== FLOATING GLASSMORPHISM NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 40px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(109, 89, 87, 0.08);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .navbar.scrolled {
+            top: 10px;
+            padding: 10px 35px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 35px rgba(109, 89, 87, 0.12);
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .navbar-logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            transition: transform 0.3s;
+        }
+
+        .navbar-logo:hover img {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: var(--dark-cream);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+
+        .navbar-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--primary-pastel);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-links a:hover::after {
+            width: 18px;
+        }
+
+        .navbar-links a:hover {
+            color: #ff9e96;
+            background: rgba(255, 183, 178, 0.08);
+        }
+
+        .navbar-links a.nav-login {
+            background: var(--primary-pastel);
+            color: var(--dark-cream) !important;
+            box-shadow: 0 4px 14px rgba(255, 183, 178, 0.35);
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .navbar-links a.nav-login::after {
+            display: none;
+        }
+
+        .navbar-links a.nav-login:hover {
+            background: #ff9e96;
+            color: #fff !important;
+            box-shadow: 0 6px 18px rgba(255, 183, 178, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 16px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2.5px;
+            background: var(--dark-cream);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+            transform-origin: left center;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            width: 0%;
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 95px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            z-index: 999;
+            box-shadow: 0 16px 40px rgba(109, 89, 87, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid rgba(255, 183, 178, 0.2);
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .mobile-menu a {
+            color: var(--dark-cream);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 12px 18px;
+            border-radius: 14px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu a:hover {
+            background: rgba(255, 183, 178, 0.12);
+            color: #ff9e96;
+        }
+
+        .mobile-menu a.nav-login {
+            background: var(--primary-pastel);
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(255, 183, 178, 0.3);
+        }
+
+        /* ===== STUNNING TWO-COLUMN HERO SECTION ===== */
+        .hero-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5f4 0%, #fffbf0 50%, #f2fff5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 20px 80px; /* Space for fixed floating navbar */
+            overflow: hidden;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .hero-content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .hero-tag {
+            background: rgba(255, 183, 178, 0.2);
+            color: #ff8b80;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(255, 183, 178, 0.05);
+        }
+
+        .hero-left h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.8rem;
+            line-height: 1.15;
+            color: var(--dark-cream);
+            margin-bottom: 20px;
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero-left h1 .highlight-text {
+            background: linear-gradient(135deg, #ff8b80, #ffa5a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-left p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #8c7270;
+            margin-bottom: 36px;
+            max-width: 540px;
+            font-weight: 500;
+            animation: slideUp 1s ease-out;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .btn {
+            padding: 15px 36px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-pastel);
+            color: var(--dark-cream);
+            box-shadow: 0 6px 20px rgba(255, 183, 178, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background-color: #ff9e96;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(255, 183, 178, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--dark-cream);
+            border: 2px solid var(--primary-pastel);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 183, 178, 0.1);
+            border-color: #ff9e96;
+            color: #ff9e96;
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-image-card {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            aspect-ratio: 0.95;
+            border-radius: 36px;
+            overflow: visible;
+            box-shadow: 0 20px 50px rgba(109, 89, 87, 0.12);
+            background: #fff;
+            padding: 12px;
+            transform: rotate(2deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .hero-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 28px;
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(109, 89, 87, 0.12);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--dark-cream);
+            z-index: 3;
+            transition: all 0.3s ease;
+        }
+
+        .floating-badge i {
+            font-size: 1.2rem;
+        }
+
+        .badge-1 {
+            top: 15%;
+            left: -50px;
+            animation: floatAround 6s infinite ease-in-out;
+        }
+
+        .badge-1 i {
+            color: #ff8b80;
+        }
+
+        .badge-2 {
+            bottom: 15%;
+            right: -40px;
+            animation: floatAround 6s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+
+        .badge-2 i {
+            color: #7bd486;
+        }
+
+        .floating-paw {
+            position: absolute;
+            color: rgba(255, 183, 178, 0.12);
+            font-size: 2.5rem;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatAround 8s infinite ease-in-out;
+        }
+
+        .paw-1 {
+            top: 15%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .paw-2 {
+            bottom: 10%;
+            left: 8%;
+            animation-delay: 2s;
+            font-size: 3.5rem;
+        }
+
+        .paw-3 {
+            top: 20%;
+            right: 6%;
+            animation-delay: 4s;
+        }
+
+        .paw-4 {
+            bottom: 15%;
+            right: 8%;
+            animation-delay: 1s;
+            font-size: 2rem;
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        section {
+            padding: 80px 20px;
+            scroll-margin-top: 90px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 14px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.4rem;
+            color: var(--dark-cream);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #9a8280;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        #about {
+            background: linear-gradient(135deg, #fff5f4 0%, #fffdf6 50%, #f5fff7 100%);
+        }
+
+        .about-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .about-text h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem;
+            color: var(--dark-cream);
+            margin-bottom: 16px;
+        }
+
+        .about-text p {
+            color: #9a8280;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+        }
+
+        .about-icons {
+            flex: 1;
+            min-width: 280px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .about-icon-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 26px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 183, 178, 0.15);
+            box-shadow: 0 10px 30px rgba(109, 89, 87, 0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .about-icon-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(109, 89, 87, 0.12);
+            border-color: var(--primary-pastel);
+        }
+
+        .about-icon-card .icon {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: var(--primary-pastel);
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .about-icon-card:hover .icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .about-icon-card h4 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--dark-cream);
+            font-size: 1.1rem;
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        #services {
+            background: #fff8f7;
+        }
+
+        .services-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 36px 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(109, 89, 87, 0.05);
+            border: 1px solid rgba(255, 183, 178, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-pastel), var(--accent-pastel));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 24px 48px rgba(109, 89, 87, 0.12);
+            border-color: rgba(255, 183, 178, 0.3);
+        }
+
+        .service-icon {
+            font-size: 2.4rem;
+            margin-bottom: 18px;
+            color: var(--primary-pastel);
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.15);
+        }
+
+        .service-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--dark-cream);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .service-card p {
+            color: #b0938f;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ===== WHY CHOOSE US ===== */
+        #why {
+            background: linear-gradient(135deg, #f5fff7, #fff5f4);
+        }
+
+        .why-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 28px;
+        }
+
+        .why-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px 28px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(109, 89, 87, 0.05);
+            border: 1px solid rgba(191, 252, 198, 0.3);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .why-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(109, 89, 87, 0.12);
+            border-color: var(--secondary-pastel);
+        }
+
+        .why-icon {
+            font-size: 2.6rem;
+            margin-bottom: 18px;
+            color: #7bd486; /* Match secondary pastel style color */
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .why-card:hover .why-icon {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .why-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--dark-cream);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .why-card p {
+            color: #9a8280;
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        #testimonials {
+            background: #fff9f8;
+        }
+
+        .testimonials-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .testimonial-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: 0 10px 30px rgba(109, 89, 87, 0.05);
+            border: 1px solid rgba(255, 183, 178, 0.15);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '\201C';
+            font-size: 5rem;
+            color: rgba(255, 183, 178, 0.35);
+            position: absolute;
+            top: 10px;
+            left: 22px;
+            font-family: Georgia, serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 36px rgba(109, 89, 87, 0.12);
+            border-color: var(--primary-pastel);
+        }
+
+        .testimonial-text {
+            color: #7a6360;
+            line-height: 1.75;
+            font-size: 0.97rem;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
+        .testimonial-footer {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .reviewer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(109, 89, 87, 0.1);
+        }
+
+        .avatar-ps {
+            background: linear-gradient(135deg, #FFB7B2, #FFA07A);
+        }
+
+        .avatar-am {
+            background: linear-gradient(135deg, #BFFCC6, #8ee898);
+        }
+
+        .avatar-sr {
+            background: linear-gradient(135deg, #FFDAC1, #ffb5bd);
+        }
+
+        .reviewer-info h4 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--dark-cream);
+            font-size: 1rem;
+        }
+
+        .stars {
+            color: #FFB7B2;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        #contact {
+            background: linear-gradient(135deg, #fff5f4, #f5fff7);
+        }
+
+        .contact-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--dark-cream);
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-info p {
+            color: #9a8280;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: #7a6360;
+            font-size: 0.97rem;
+        }
+
+        .contact-detail i {
+            color: var(--primary-pastel);
+            font-size: 1.2rem;
+            width: 22px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .social-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 183, 178, 0.2);
+            border: 1px solid rgba(255, 183, 178, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-cream);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-pastel);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 183, 178, 0.4);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid rgba(109, 89, 87, 0.12);
+            border-radius: 14px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--dark-cream);
+            background: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+            resize: none;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--primary-pastel);
+            box-shadow: 0 0 0 4px rgba(255, 183, 178, 0.2);
+        }
+
+        .contact-form textarea {
+            height: 130px;
+        }
+
+        .contact-submit {
+            padding: 14px;
+            background: var(--primary-pastel);
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--dark-cream);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 18px rgba(255, 183, 178, 0.4);
+        }
+
+        .contact-submit:hover {
+            background: #ff9e96;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(255, 183, 178, 0.5);
+        }
+
+        /* ===== FOOTER ===== */
+        .main-footer {
+            background: linear-gradient(135deg, #3d2a29, #5a3a38);
+            /* color: rgba(255, 255, 255, 0.8); */
+            padding: 60px 20px 30px;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand img {
+            height: 52px;
+            margin-bottom: 14px;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary-pastel);
+            color: var(--dark-cream);
+            transform: translateY(-3px);
+        }
+
+        .footer-col h4 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.93rem;
+            margin-bottom: 8px;
+            transition: color 0.25s;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-pastel);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.88rem;
+        }
+
+        /* ===== MODAL (unchanged) ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: var(--white-alpha);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--dark-cream);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-pastel);
+        }
+
+        .modal-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: #a09290;
+            cursor: pointer;
+            position: relative;
+            padding: 5px 10px;
+        }
+
+        .tab-btn.active {
+            color: var(--dark-cream);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-pastel);
+            border-radius: 10px;
+        }
+
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a09290;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            color: var(--dark-cream);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-pastel);
+            box-shadow: 0 0 0 4px rgba(255, 183, 178, 0.25);
+            background: #fff;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: var(--dark-cream);
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: var(--dark-cream);
+            text-decoration: none;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+            color: var(--primary-pastel);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-pastel);
+            border: none;
+            border-radius: 12px;
+            color: var(--dark-cream);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 183, 178, 0.4);
+        }
+
+        .submit-btn:hover {
+            background: #ff9e96;
+            transform: translateY(-2px);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatAround {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(15deg);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:900px) {
+            .contact-inner {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-inner {
+                flex-direction: column;
+                gap: 36px;
+            }
+        }
+
+        @media(max-width:768px) {
+            .navbar-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .main-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .main-content p {
+                font-size: 1.2rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 80%;
+                justify-content: center;
+            }
+        }
+
+        @media(max-width:480px) {
+            .navbar {
+                width: calc(100% - 24px);
+                padding: 8px 16px;
+            }
+
+            .main-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .main-content p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .modal-box {
+                padding: 25px 20px;
+                margin: 10px;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .section-title {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
 </head>
-<body class="welcome-page">
 
-  <!-- Floating paw prints -->
-  <div class="paw-float paw-1">🐾</div>
-  <div class="paw-float paw-2">🐾</div>
-  <div class="paw-float paw-3">🐾</div>
-  <div class="paw-float paw-4">🐾</div>
-  <div class="paw-float paw-5">🐾</div>
+<body>
 
-  <!-- Dark mode toggle -->
-  <button class="dark-toggle" id="darkToggle" title="Toggle Dark Mode">
-    <i class="fas fa-moon"></i>
-  </button>
-
-  <!-- Hero Section -->
-  <div class="welcome-overlay">
-    <div class="welcome-content fade-in">
-      <h1 class="welcome-title">Welcome to <span>Pet Paw🐾</span></h1>
-      <p class="welcome-tagline">Because every pet deserves love and care.</p>
-
-      <div class="welcome-card">
-        <div class="input-group">
-          <label for="petName"><i class="fas fa-paw"></i> What's your pet's name?</label>
-          <input type="text" id="petName" placeholder="e.g. Bruno, Luna, Max..." maxlength="30"/>
+    <!-- ===== GLASSMORPHISM STICKY NAVBAR ===== -->
+    <nav class="navbar" id="mainNavbar">
+        <a href="#" class="navbar-logo">
+            <img src="pet_logo.png" alt="Pet Paw Logo">
+        </a>
+        <div class="navbar-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+            <a href="login.html" class="nav-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
         </div>
-
-        <div class="pet-type-group">
-          <p class="type-label">Choose your pet:</p>
-          <div class="pet-cards">
-            <div class="pet-card" id="dogCard" onclick="selectPet('dog')">
-              <div class="pet-emoji">🐶</div>
-              <span>Dog</span>
-            </div>
-            <div class="pet-card" id="catCard" onclick="selectPet('cat')">
-              <div class="pet-emoji">🐱</div>
-              <span>Cat</span>
-            </div>
-          </div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
+    </nav>
 
-        <button class="glow-btn" onclick="startCaring()">
-          <i class="fas fa-heart"></i> Start Caring
-        </button>
-        <button class="glow-btn" onclick="window.location.href='sample.html'">
-          <i class="fas fa-heart"></i> Back
-        </button>
-      </div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#about" onclick="toggleMenu()"><i class="fa-solid fa-paw"></i> About</a>
+        <a href="#services" onclick="toggleMenu()"><i class="fa-solid fa-hand-holding-heart"></i> Services</a>
+        <a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-envelope"></i> Contact</a>
+        <a href="login.html" class="nav-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-  <script>
-    let selectedPet = '';
-    function selectPet(type) {
-      selectedPet = type;
-      document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById(type + 'Card').classList.add('selected');
-    }
-    function startCaring() {
-      const name = document.getElementById('petName').value.trim();
-      if (!name) { alert('Please enter your pet\'s name! 🐾'); return; }
-      if (!selectedPet) { alert('Please choose Dog or Cat! 🐾'); return; }
-      localStorage.setItem('petName', name);
-      localStorage.setItem('petType', selectedPet);
-      window.location.href = 'profile.html';
-    }
-  </script>
+    <!-- ===== HERO SECTION ===== -->
+    <div class="hero-container" id="home">
+        <i class="fa-solid fa-paw floating-paw paw-1"></i>
+        <i class="fa-solid fa-paw floating-paw paw-2"></i>
+        <i class="fa-solid fa-paw floating-paw paw-3"></i>
+        <i class="fa-solid fa-paw floating-paw paw-4"></i>
+
+        <div class="hero-content-wrapper">
+            <div class="hero-left">
+                <span class="hero-tag"><i class="fa-solid fa-paw"></i> Premium Pet Care</span>
+                <h1>We Care.<br><span class="highlight-text">They Deserve.</span></h1>
+                <p>Discover professional grooming, veterinary checkups, cozy boarding, and certified training tailored for your furry family member.</p>
+                <div class="cta-group">
+                    <a href="login.html" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> Join Our Family</a>
+                    <a href="#services" class="btn btn-secondary">Explore Services</a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-image-card">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80" alt="Happy Dog">
+                    <div class="floating-badge badge-1">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>100% Loving Care</span>
+                    </div>
+                    <div class="floating-badge badge-2">
+                        <i class="fa-solid fa-shield-dog"></i>
+                        <span>Vet Approved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about">
+        <h2 class="section-title fade-in-up">About Pet Paw</h2>
+        <p class="section-subtitle fade-in-up">We believe every furry friend deserves the very best care, love, and
+            attention — always.</p>
+        <div class="about-inner">
+            <div class="about-text fade-in-up">
+                <h2>We Care. They Deserve.</h2>
+                <p>Pet Paw is a passionate community of pet lovers, veterinarians, and care specialists dedicated to
+                    giving your companions a healthier, happier life. From expert grooming to emergency care, we cover
+                    it all.</p>
+                <p>Founded with love, built with trust — we've helped thousands of families find the right care
+                    solutions for their beloved dogs and cats. Our team is available 24/7 because pets don't follow a
+                    9-to-5 schedule, and neither do we.</p>
+            </div>
+            <div class="about-icons">
+                <div class="about-icon-card fade-in-up">
+                    <div class="icon"><i class="fa-solid fa-dog"></i></div>
+                    <h4>Dogs Welcome</h4>
+                </div>
+                <div class="about-icon-card fade-in-up">
+                    <div class="icon"><i class="fa-solid fa-cat"></i></div>
+                    <h4>Cat Friendly</h4>
+                </div>
+                <div class="about-icon-card fade-in-up">
+                    <div class="icon"><i class="fa-solid fa-syringe"></i></div>
+                    <h4>Vet Approved</h4>
+                </div>
+                <div class="about-icon-card fade-in-up">
+                    <div class="icon"><i class="fa-solid fa-heart"></i></div>
+                    <h4>Made With Love</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SERVICES SECTION ===== -->
+    <section id="services">
+        <h2 class="section-title fade-in-up">Our Services</h2>
+        <p class="section-subtitle fade-in-up">Everything your pet needs, all in one place — delivered with care and
+            expertise.</p>
+        <div class="services-grid">
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-scissors"></i></span>
+                <h3>Pet Grooming</h3>
+                <p>Professional grooming sessions to keep your pet clean, healthy, and looking fabulous.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-stethoscope"></i></span>
+                <h3>Veterinary Care</h3>
+                <p>Expert vet consultations, health checkups, and vaccinations for your beloved companion.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-house-chimney-user"></i></span>
+                <h3>Pet Adoption</h3>
+                <p>Find your perfect furry match through our trusted and compassionate adoption program.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                <h3>Pet Training</h3>
+                <p>Certified trainers help your pet learn good habits, commands, and social skills.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-bed"></i></span>
+                <h3>Pet Boarding</h3>
+                <p>Safe, cozy boarding when you're away — your pet will feel right at home with us.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-circle-exclamation"></i></span>
+                <h3>Emergency Care</h3>
+                <p>Round-the-clock emergency services because your pet's health can't wait.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-bone"></i></span>
+                <h3>Pet Daycare</h3>
+                <p>Safe and fun play environment where your pet can socialize and exercise while you're away.</p>
+            </div>
+            <div class="service-card fade-in-up">
+                <span class="service-icon"><i class="fa-solid fa-bowl-food"></i></span>
+                <h3>Pet Nutrition</h3>
+                <p>Custom dietary plans and meal guidance from certified experts to keep your pet in peak health.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY CHOOSE US ===== -->
+    <section id="why">
+        <h2 class="section-title fade-in-up">Why Choose Us?</h2>
+        <p class="section-subtitle fade-in-up">Thousands of pet parents trust Pet Paw — here's why they keep coming
+            back.</p>
+        <div class="why-grid">
+            <div class="why-card fade-in-up">
+                <div class="why-icon"><i class="fa-solid fa-award"></i></div>
+                <h3>Trusted Pet Experts</h3>
+                <p>Our certified team has years of experience caring for pets of all breeds and ages.</p>
+            </div>
+            <div class="why-card fade-in-up">
+                <div class="why-icon"><i class="fa-solid fa-clock"></i></div>
+                <h3>24/7 Support</h3>
+                <p>We're always here — day or night — ready to assist you and your furry friend.</p>
+            </div>
+            <div class="why-card fade-in-up">
+                <div class="why-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <h3>Affordable Care</h3>
+                <p>Premium pet care doesn't have to be expensive. Our plans fit every budget.</p>
+            </div>
+            <div class="why-card fade-in-up">
+                <div class="why-icon"><i class="fa-solid fa-paw"></i></div>
+                <h3>Happy Pet Community</h3>
+                <p>Join thousands of happy pet families who share tips, stories, and support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="testimonials">
+        <h2 class="section-title fade-in-up">What Pet Parents Say</h2>
+        <p class="section-subtitle fade-in-up">Real reviews from real pet lovers who found their perfect care solution
+            with us.</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card fade-in-up">
+                <p class="testimonial-text">Pet Paw completely changed how I care for my golden retriever Max! The
+                    grooming team is so gentle and the vets are incredibly knowledgeable. Couldn't be happier!</p>
+                <div class="testimonial-footer">
+                    <div class="reviewer-avatar initials-avatar avatar-ps">PS</div>
+                    <div class="reviewer-info">
+                        <h4>Priya Sharma</h4>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-in-up">
+                <p class="testimonial-text">I was so nervous about my first cat Bella, but the Pet Paw team guided me
+                    through everything. The 24/7 support gave me so much peace of mind as a first-time pet parent.</p>
+                <div class="testimonial-footer">
+                    <div class="reviewer-avatar initials-avatar avatar-am">AM</div>
+                    <div class="reviewer-info">
+                        <h4>Arjun Mehta</h4>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-in-up">
+                <p class="testimonial-text">The boarding service is incredible. My dog Luna came back so happy and
+                    well-cared for. The staff clearly loves animals — it shows in everything they do!</p>
+                <div class="testimonial-footer">
+                    <div class="reviewer-avatar initials-avatar avatar-sr">SR</div>
+                    <div class="reviewer-info">
+                        <h4>Sneha Reddy</h4>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section id="contact">
+        <h2 class="section-title fade-in-up">Get In Touch</h2>
+        <p class="section-subtitle fade-in-up">Have a question about your pet? We'd love to hear from you!</p>
+        <div class="contact-inner">
+            <div class="contact-info fade-in-up">
+                <h3>Let's Talk Paws!</h3>
+                <p>Whether you need advice, want to book a service, or just want to share a cute pet pic — our team is
+                    always ready.</p>
+                <div class="contact-detail"><i class="fa-solid fa-envelope"></i> hello@petpaw.care</div>
+                <div class="contact-detail"><i class="fa-solid fa-phone"></i> +91 98765 43210</div>
+                <div class="contact-detail"><i class="fa-solid fa-location-dot"></i> Vijayawada, Andhra Pradesh, India
+                </div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="fade-in-up">
+                <div class="contact-form">
+                    <input type="text" id="contactName" placeholder="Your Name">
+                    <input type="email" id="contactEmail" placeholder="Your Email">
+                    <textarea id="contactMsg" placeholder="Your Message"></textarea>
+                    <button class="contact-submit" onclick="submitContact()">
+                        <i class="fa-solid fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MAIN FOOTER ===== -->
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                        <img src="pet_logo.png" alt="pet paw logo">
+                <p>We Care. They Deserve.<br>Pet care solutions crafted with love for every furry family member.</p>
+                <p>PetPaw@gmail.com</p>
+                <div class="footer-social"> <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <a href="#">Pet Grooming</a>
+                <a href="#">Veterinary Care</a>
+                <a href="#">Pet Boarding</a>
+                <a href="#">Emergency Care</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">FAQ</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="login.html">Login / Sign Up</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Pet Paw Care Network. Crafted with love for pets everywhere.
+        </div>
+    </footer>
+
+    <!-- ===== AUTH MODAL (UNCHANGED) ===== -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModal()"></i>
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Log In</button>
+                <button class="tab-btn" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            <div class="form-panel active" id="loginPanel">
+                <form onsubmit="handleFormSubmit(event,'Login')">
+                    <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email"
+                            placeholder="Email Address" required></div>
+                    <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password"
+                            placeholder="Password" required></div>
+                    <div class="form-options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#" onclick="alert('Password reset link simulated!')">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="submit-btn">Welcome Back!</button>
+                </form>
+            </div>
+            <div class="form-panel" id="signupPanel">
+                <form onsubmit="handleFormSubmit(event,'Registration')">
+                    <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" placeholder="Your Name"
+                            required></div>
+                    <div class="input-group"><i class="fa-solid fa-envelope"></i><input type="email"
+                            placeholder="Email Address" required></div>
+                    <div class="input-group"><i class="fa-solid fa-lock"></i><input type="password"
+                            placeholder="Create Password" required></div>
+                    <div class="form-options"><label><input type="checkbox" required> I agree to Pet Terms</label></div>
+                    <button type="submit" class="submit-btn">Start Your Journey</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ===== NAVBAR SCROLL EFFECT ===== */
+        const navbar = document.getElementById('mainNavbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        /* ===== HAMBURGER MENU ===== */
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+            document.getElementById('hamburger').classList.toggle('open');
+        }
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const ham = document.getElementById('hamburger');
+            if (!menu.contains(e.target) && !ham.contains(e.target)) {
+                menu.classList.remove('open');
+                ham.classList.remove('open');
+            }
+        });
+
+        /* ===== SCROLL FADE-IN ANIMATIONS ===== */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+        /* ===== MODAL LOGIC (UNCHANGED) ===== */
+        const modal = document.getElementById('authModal');
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const loginPanel = document.getElementById('loginPanel');
+        const signupPanel = document.getElementById('signupPanel');
+
+        function openModal(tab) { modal.classList.add('active'); switchTab(tab); }
+        function closeModal() { modal.classList.remove('active'); }
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        function switchTab(type) {
+            if (type === 'login') {
+                loginTab.classList.add('active'); signupTab.classList.remove('active');
+                loginPanel.classList.add('active'); signupPanel.classList.remove('active');
+            } else {
+                signupTab.classList.add('active'); loginTab.classList.remove('active');
+                signupPanel.classList.add('active'); loginPanel.classList.remove('active');
+            }
+        }
+        function handleFormSubmit(event, actionType) {
+            event.preventDefault();
+            alert(actionType + ' successful! (Frontend Simulation Only)');
+            closeModal();
+        }
+
+        /* ===== CONTACT FORM ===== */
+        function submitContact() {
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const msg = document.getElementById('contactMsg').value.trim();
+            if (!name || !email || !msg) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            alert('Thank you, ' + name + '! We\'ll get back to you soon.');
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactMsg').value = '';
+        }
+
+        /* ===== LOGIN PAGE TAB PARAM ===== */
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('tab') === 'signup') openModal('signup');
+    </script>
 </body>
+
 </html>
