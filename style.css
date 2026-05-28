@@ -358,6 +358,42 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
 }
 .tip-banner button:hover { background: rgba(0,0,0,0.07); transform: rotate(180deg); }
 
+/* Quick Stats */
+.quick-stats {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;
+}
+.stat-card {
+  flex: 1; min-width: 200px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px; display: flex; align-items: center; gap: 16px;
+  box-shadow: var(--shadow-sm); transition: all var(--transition);
+}
+body.dark .stat-card { background: rgba(35, 26, 32, 0.7); }
+.stat-card:hover {
+  transform: translateY(-5px); box-shadow: var(--shadow);
+  border-color: var(--pink-dark);
+}
+.stat-icon {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: white;
+}
+.stat-icon.pink { background: linear-gradient(135deg, #FFB5C8, #FF8FAB); }
+.stat-icon.blue { background: linear-gradient(135deg, #A8D8EA, #78BDD4); }
+.stat-icon.green { background: linear-gradient(135deg, #A5D6A7, #66BB6A); }
+.stat-info small { color: var(--text-light); font-size: 0.9rem; display: block; margin-bottom: 4px; }
+.stat-info strong { font-size: 1.4rem; color: var(--text); }
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px; margin-bottom: 40px;
+}
+.dashboard-grid .dash-section { margin-bottom: 0; }
+
 /* Section Titles */
 .dash-section { margin-bottom: 40px; }
 .section-title {
@@ -378,9 +414,12 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
    CHECKLIST
    ============================================ */
 .checklist-card {
-  background: var(--card-bg); border-radius: var(--radius);
-  border: 1.5px solid var(--border); padding: 28px; box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px);
+  border-radius: var(--radius); border: 1.5px solid var(--border);
+  padding: 28px; box-shadow: var(--shadow-sm); transition: all var(--transition);
 }
+body.dark .checklist-card { background: rgba(35, 26, 32, 0.75); }
+.checklist-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--pink); }
 .checklist-progress-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
 .checklist-progress-bar {
   flex: 1; height: 10px; background: var(--light-gray);
@@ -420,10 +459,12 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
 .health-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
 
 .health-card {
-  background: var(--card-bg); border: 1.5px solid var(--border);
-  border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm);
-  transition: all var(--transition); position: relative; overflow: hidden;
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 24px; box-shadow: var(--shadow-sm); transition: all var(--transition);
+  position: relative; overflow: hidden;
 }
+body.dark .health-card { background: rgba(35, 26, 32, 0.75); }
 .health-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--pink); }
 .health-icon { font-size: 2.4rem; margin-bottom: 12px; }
 .health-card h4 { font-size: 1.05rem; margin-bottom: 8px; color: var(--text); }
@@ -448,9 +489,12 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
    SYMPTOM CHECKER
    ============================================ */
 .symptom-card {
-  background: var(--card-bg); border: 1.5px solid var(--border);
-  border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 28px; box-shadow: var(--shadow-sm); transition: all var(--transition);
 }
+body.dark .symptom-card { background: rgba(35, 26, 32, 0.75); }
+.symptom-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--pink); }
 .symptom-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
 .symptom-row .form-group { flex: 1; min-width: 200px; }
 .symptom-row select { min-width: 200px; }
@@ -511,9 +555,11 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
 .tracker-form-row .form-group { flex: 1; min-width: 160px; }
 
 .tracker-table-wrap {
-  background: var(--card-bg); border: 1.5px solid var(--border);
-  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-sm); transition: all var(--transition);
 }
+body.dark .tracker-table-wrap { background: rgba(35, 26, 32, 0.75); }
 .tracker-table { width: 100%; border-collapse: collapse; }
 .tracker-table thead th {
   background: var(--cream); color: var(--brown); font-size: 0.88rem;
@@ -548,19 +594,6 @@ body.dark input, body.dark select { background: var(--light-gray); color: var(--
 .del-btn:hover { background: #EF9A9A; transform: scale(1.05); }
 
 .no-records { text-align: center; padding: 28px; color: var(--text-light); }
-
-.summary-cards { display: flex; gap: 20px; flex-wrap: wrap; }
-.sum-card {
-  flex: 1; min-width: 160px; border-radius: var(--radius-sm);
-  padding: 20px 22px; display: flex; align-items: center; gap: 14px;
-  font-weight: 700; box-shadow: var(--shadow-sm);
-}
-.sum-card .sum-icon { font-size: 2rem; }
-.sum-card strong { display: block; font-size: 1.8rem; line-height: 1; }
-.sum-card span { font-size: 0.85rem; color: var(--text-light); }
-.sum-card.blue { background: #E3F2FD; border: 1.5px solid #90CAF9; }
-.sum-card.green { background: #E8F5E9; border: 1.5px solid #A5D6A7; }
-.sum-card.orange { background: #FFF3E0; border: 1.5px solid #FFCC80; }
 
 
 /* ============================================

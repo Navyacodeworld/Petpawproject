@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Paw 🐾 — Vet Tracker</title>
+  <title>Pet Paw — Vet Tracker</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -12,10 +12,13 @@
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <div class="sidebar-logo">🐾 <span>Pet Paw</span></div>
+    <div class="sidebar-logo"><i class="fas fa-paw"></i> <span>Pet Paw</span></div>
     <ul class="sidebar-nav">
       <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="tracker.html" class="active"><i class="fas fa-syringe"></i> Vet Tracker</a></li>
+      <li><a href="nutrition.html"><i class="fas fa-bone"></i> Diet & Nutrition</a></li>
+      <li><a href="training.html"><i class="fas fa-dumbbell"></i> Training Guide</a></li>
+      <li><a href="community.html"><i class="fas fa-users"></i> Community</a></li>
       <li><a href="profile.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
       <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
@@ -37,9 +40,9 @@
 
     <div class="topbar">
       <div class="topbar-left">
-        <div class="pet-avatar" id="topAvatar">🐾</div>
+        <div class="pet-avatar" id="topAvatar"><i class="fas fa-paw"></i></div>
         <div>
-          <h2>Vet & Vaccine Tracker 💉</h2>
+          <h2>Vet & Vaccine Tracker <i class="fas fa-syringe"></i></h2>
           <p class="topbar-sub">Keep your pet's health records organized</p>
         </div>
       </div>
@@ -52,18 +55,18 @@
     </div>
 
     <!-- Add Record -->
-    <section class="dash-section fade-in">
+    <section class="dash-section fade-in" style="animation-delay: 0.1s;">
       <h3 class="section-title"><i class="fas fa-plus-circle"></i> Add Health Record</h3>
       <div class="tracker-add-card glass-card">
         <div class="tracker-form-row">
           <div class="form-group">
             <label>Record Type</label>
             <select id="recType">
-              <option value="Rabies Vaccine">💉 Rabies Vaccine</option>
-              <option value="Deworming">🐛 Deworming</option>
-              <option value="Annual Checkup">🏥 Annual Checkup</option>
-              <option value="Flea Treatment">🦟 Flea Treatment</option>
-              <option value="Other">📋 Other</option>
+              <option value="Rabies Vaccine">Rabies Vaccine</option>
+              <option value="Deworming">Deworming</option>
+              <option value="Annual Checkup">Annual Checkup</option>
+              <option value="Flea Treatment">Flea Treatment</option>
+              <option value="Other">Other</option>
             </select>
           </div>
           <div class="form-group">
@@ -82,7 +85,7 @@
     </section>
 
     <!-- Records Table -->
-    <section class="dash-section fade-in">
+    <section class="dash-section fade-in" style="animation-delay: 0.2s;">
       <h3 class="section-title"><i class="fas fa-clipboard-list"></i> Health Records</h3>
       <div class="tracker-table-wrap">
         <table class="tracker-table" id="trackerTable">
@@ -97,14 +100,14 @@
           </thead>
           <tbody id="trackerBody"></tbody>
         </table>
-        <p class="no-records" id="noRecords" style="display:none">No records yet. Add one above! 🐾</p>
+        <p class="no-records" id="noRecords" style="display:none">No records yet. Add one above! <i class="fas fa-paw"></i></p>
       </div>
     </section>
 
     <!-- Summary Cards -->
-    <section class="dash-section fade-in">
+    <section class="dash-section fade-in" style="animation-delay: 0.3s;">
       <h3 class="section-title"><i class="fas fa-chart-pie"></i> Summary</h3>
-      <div class="summary-cards" id="summaryCards"></div>
+      <div class="quick-stats" id="summaryCards"></div>
     </section>
 
   </main>
@@ -117,7 +120,7 @@
       const type = localStorage.getItem('petType') || 'dog';
       const photo = localStorage.getItem('petPhoto');
       if (photo) document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
-      else document.getElementById('topAvatar').textContent = type === 'dog' ? '🐶' : '🐱';
+      else document.getElementById('topAvatar').innerHTML = type === 'dog' ? '<i class="fas fa-dog"></i>' : '<i class="fas fa-cat"></i>';
       // Seed default records if empty
       if (!localStorage.getItem('vetRecords')) {
         const defaults = [
@@ -167,7 +170,7 @@
           <td>${r.type}</td>
           <td>${r.date || '—'}</td>
           <td>${r.notes || '—'}</td>
-          <td><span class="status-pill ${r.status}">${r.status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td>
+          <td><span class="status-pill ${r.status}">${r.status === 'completed' ? '<i class="fas fa-check-circle"></i> Completed' : '<i class="fas fa-hourglass-half"></i> Pending'}</span></td>
           <td>
             ${r.status === 'pending' ? `<button class="mark-done-btn" onclick="markDone(${r.id})"><i class="fas fa-check"></i> Mark Done</button>` : ''}
             <button class="del-btn" onclick="deleteRecord(${r.id})"><i class="fas fa-trash"></i></button>
@@ -180,9 +183,18 @@
       const done = records.filter(r => r.status === 'completed').length;
       const pending = total - done;
       document.getElementById('summaryCards').innerHTML = `
-        <div class="sum-card blue"><div class="sum-icon">📋</div><div><strong>${total}</strong><span>Total Records</span></div></div>
-        <div class="sum-card green"><div class="sum-icon">✅</div><div><strong>${done}</strong><span>Completed</span></div></div>
-        <div class="sum-card orange"><div class="sum-icon">⏳</div><div><strong>${pending}</strong><span>Pending</span></div></div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-clipboard-list"></i></div>
+          <div class="stat-info"><small>Total Records</small><strong>${total}</strong></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-info"><small>Completed</small><strong>${done}</strong></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon pink"><i class="fas fa-hourglass-half"></i></div>
+          <div class="stat-info"><small>Pending</small><strong>${pending}</strong></div>
+        </div>
       `;
     }
 

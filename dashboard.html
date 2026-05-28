@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Paw 🐾 — Dashboard</title>
+  <title>Pet Paw — Dashboard</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -12,10 +12,13 @@
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
-    <div class="sidebar-logo">🐾 <span>Pet Paw</span></div>
+    <div class="sidebar-logo"><i class="fas fa-paw"></i> <span>Pet Paw</span></div>
     <ul class="sidebar-nav">
       <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="tracker.html"><i class="fas fa-syringe"></i> Vet Tracker</a></li>
+      <li><a href="nutrition.html"><i class="fas fa-bone"></i> Diet & Nutrition</a></li>
+      <li><a href="training.html"><i class="fas fa-dumbbell"></i> Training Guide</a></li>
+      <li><a href="community.html"><i class="fas fa-users"></i> Community</a></li>
       <li><a href="profile.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
       <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
@@ -40,9 +43,9 @@
     <!-- Top Bar -->
     <div class="topbar">
       <div class="topbar-left">
-        <div class="pet-avatar" id="topAvatar">🐾</div>
+        <div class="pet-avatar" id="topAvatar"><i class="fas fa-paw"></i></div>
         <div>
-          <h2 class="greeting" id="greetingMsg">Good Morning! 🐾</h2>
+          <h2 class="greeting" id="greetingMsg">Good Morning! <i class="fas fa-paw"></i></h2>
           <p class="topbar-sub" id="topSub">Loading profile...</p>
         </div>
       </div>
@@ -61,8 +64,36 @@
       <button onclick="newTip()" title="New Tip"><i class="fas fa-sync-alt"></i></button>
     </div>
 
-    <!-- SECTION A: Checklist -->
-    <section class="dash-section fade-in">
+    <!-- Quick Stats -->
+    <section class="quick-stats fade-in">
+      <div class="stat-card">
+        <div class="stat-icon pink"><i class="fas fa-weight"></i></div>
+        <div class="stat-info">
+          <small>Weight</small>
+          <strong id="statWeight">15 kg</strong>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-birthday-cake"></i></div>
+        <div class="stat-info">
+          <small>Age</small>
+          <strong id="statAge">3 Years</strong>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-calendar-check"></i></div>
+        <div class="stat-info">
+          <small>Next Vet Visit</small>
+          <strong id="statVet">Oct 12</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Grid Container -->
+    <div class="dashboard-grid">
+
+      <!-- SECTION A: Checklist -->
+      <section class="dash-section fade-in" style="animation-delay: 0.1s;">
       <h3 class="section-title"><i class="fas fa-tasks"></i> Today's Care Checklist</h3>
       <div class="checklist-card">
         <div class="checklist-progress-wrap">
@@ -72,25 +103,57 @@
           <span class="progress-pct" id="progressPct">0% Complete</span>
         </div>
         <ul class="checklist" id="checklist">
-          <li data-id="task1"><label><input type="checkbox" onchange="updateChecklist()"/> <span>🌅 Morning Walk <small>(7 AM)</small></span></label></li>
-          <li data-id="task2"><label><input type="checkbox" onchange="updateChecklist()"/> <span>🍗 Breakfast <small>(8 AM)</small></span></label></li>
-          <li data-id="task3"><label><input type="checkbox" onchange="updateChecklist()"/> <span>🎾 Play Time <small>(30 mins)</small></span></label></li>
-          <li data-id="task4"><label><input type="checkbox" onchange="updateChecklist()"/> <span>🌆 Evening Walk <small>(5 PM)</small></span></label></li>
-          <li data-id="task5"><label><input type="checkbox" onchange="updateChecklist()"/> <span>🍖 Dinner <small>(7 PM)</small></span></label></li>
+          <li data-id="task1"><label><input type="checkbox" onchange="updateChecklist()"/> <span><i class="fas fa-sun" style="color:#f39c12"></i> Morning Walk <small>(7 AM)</small></span></label></li>
+          <li data-id="task2"><label><input type="checkbox" onchange="updateChecklist()"/> <span><i class="fas fa-drumstick-bite" style="color:#d35400"></i> Breakfast <small>(8 AM)</small></span></label></li>
+          <li data-id="task3"><label><input type="checkbox" onchange="updateChecklist()"/> <span><i class="fas fa-baseball-ball" style="color:#8bc34a"></i> Play Time <small>(30 mins)</small></span></label></li>
+          <li data-id="task4"><label><input type="checkbox" onchange="updateChecklist()"/> <span><i class="fas fa-cloud-moon" style="color:#34495e"></i> Evening Walk <small>(5 PM)</small></span></label></li>
+          <li data-id="task5"><label><input type="checkbox" onchange="updateChecklist()"/> <span><i class="fas fa-bone" style="color:#795548"></i> Dinner <small>(7 PM)</small></span></label></li>
         </ul>
         <div class="celebration" id="celebration" style="display:none">
-          🎉 All tasks done! You're an amazing pet parent! 🐾
+          <i class="fas fa-glass-cheers"></i> All tasks done! You're an amazing pet parent! <i class="fas fa-paw"></i>
         </div>
       </div>
     </section>
 
-    <!-- SECTION B: Healthcare -->
-    <section class="dash-section fade-in">
+
+      <!-- SECTION B: Symptom Checker -->
+      <section class="dash-section fade-in" style="animation-delay: 0.2s;">
+      <h3 class="section-title"><i class="fas fa-stethoscope"></i> Pet Symptom Checker</h3>
+      <div class="symptom-card">
+        <div class="symptom-row">
+          <div class="form-group">
+            <label>Select Symptom:</label>
+            <select id="symptomSelect" onchange="onSymptomChange()">
+              <option value="">— Choose a symptom —</option>
+              <option value="vomit">Vomiting</option>
+              <option value="urine">Urine Issues</option>
+              <option value="lethargy">Lethargy</option>
+              <option value="noappetite">No Appetite</option>
+            </select>
+          </div>
+          <div class="form-group" id="vomitColorGroup" style="display:none">
+            <label>Vomit Color:</label>
+            <select id="vomitColor" onchange="checkSymptom()">
+              <option value="">— Choose color —</option>
+              <option value="yellow">Yellow</option>
+              <option value="white">White Foam</option>
+              <option value="brown">Brown</option>
+            </select>
+          </div>
+        </div>
+        <div class="symptom-result" id="symptomResult" style="display:none"></div>
+      </div>
+      </section>
+
+    </div> <!-- End of dashboard-grid -->
+
+    <!-- SECTION C: Healthcare Guide -->
+    <section class="dash-section fade-in" style="animation-delay: 0.3s;">
       <h3 class="section-title"><i class="fas fa-heart"></i> Healthcare Guide</h3>
       <p class="warning-text"><i class="fas fa-exclamation-triangle"></i> For educational purposes only. Not a replacement for veterinary advice.</p>
       <div class="health-grid">
         <div class="health-card">
-          <div class="health-icon">🛁</div>
+          <div class="health-icon"><i class="fas fa-bath"></i></div>
           <h4>Dog Shampoo</h4>
           <p>Use pH-balanced, sulfate-free dog shampoos. Avoid human shampoos.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -99,7 +162,7 @@
           </div>
         </div>
         <div class="health-card">
-          <div class="health-icon">🐱</div>
+          <div class="health-icon"><i class="fas fa-cat"></i></div>
           <h4>Cat Shampoo</h4>
           <p>Cats rarely need baths. Use gentle, waterless shampoo if needed.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -108,7 +171,7 @@
           </div>
         </div>
         <div class="health-card">
-          <div class="health-icon">🐾</div>
+          <div class="health-icon"><i class="fas fa-paw"></i></div>
           <h4>Paw Moisturizer</h4>
           <p>Keep paws soft and crack-free with pet-safe balms.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -117,7 +180,7 @@
           </div>
         </div>
         <div class="health-card">
-          <div class="health-icon">✂️</div>
+          <div class="health-icon"><i class="fas fa-cut"></i></div>
           <h4>Nail Cutting</h4>
           <p>Trim nails every 3–4 weeks to prevent overgrowth pain.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -126,7 +189,7 @@
           </div>
         </div>
         <div class="health-card">
-          <div class="health-icon">💇</div>
+          <div class="health-icon"><i class="fas fa-scissors"></i></div>
           <h4>Hair Trimming</h4>
           <p>Regular grooming prevents matting and keeps coats healthy.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -135,7 +198,7 @@
           </div>
         </div>
         <div class="health-card">
-          <div class="health-icon">🦷</div>
+          <div class="health-icon"><i class="fas fa-tooth"></i></div>
           <h4>Dental Care</h4>
           <p>Brush teeth 2–3 times weekly to prevent dental disease.</p>
           <button class="learn-btn" onclick="toggleLearn(this)">Learn More ▼</button>
@@ -146,37 +209,8 @@
       </div>
     </section>
 
-    <!-- SECTION C: Symptom Checker -->
-    <section class="dash-section fade-in">
-      <h3 class="section-title"><i class="fas fa-stethoscope"></i> Pet Symptom Checker</h3>
-      <div class="symptom-card">
-        <div class="symptom-row">
-          <div class="form-group">
-            <label>Select Symptom:</label>
-            <select id="symptomSelect" onchange="onSymptomChange()">
-              <option value="">— Choose a symptom —</option>
-              <option value="vomit">🤢 Vomiting</option>
-              <option value="urine">💧 Urine Issues</option>
-              <option value="lethargy">😴 Lethargy</option>
-              <option value="noappetite">🚫 No Appetite</option>
-            </select>
-          </div>
-          <div class="form-group" id="vomitColorGroup" style="display:none">
-            <label>Vomit Color:</label>
-            <select id="vomitColor" onchange="checkSymptom()">
-              <option value="">— Choose color —</option>
-              <option value="yellow">🟡 Yellow</option>
-              <option value="white">⚪ White Foam</option>
-              <option value="brown">🟤 Brown</option>
-            </select>
-          </div>
-        </div>
-        <div class="symptom-result" id="symptomResult" style="display:none"></div>
-      </div>
-    </section>
-
     <!-- Nearby Pet Care Centers -->
-    <section class="dash-section fade-in">
+    <section class="dash-section fade-in" style="animation-delay: 0.4s;">
       <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> Nearby Pet Care Centers</h3>
       <div class="centers-grid" id="centersGrid"></div>
     </section>
@@ -226,7 +260,7 @@
       if (photo) {
         document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
       } else {
-        document.getElementById('topAvatar').textContent = type === 'dog' ? '\uD83D\uDC36' : '\uD83D\uDC31';
+        document.getElementById('topAvatar').innerHTML = type === 'dog' ? '<i class="fas fa-dog"></i>' : '<i class="fas fa-cat"></i>';
       }
       loadChecklist();
       showTip();
@@ -283,17 +317,17 @@
         const color = document.getElementById('vomitColor').value;
         if (!color) return;
         const data = {
-          yellow: { text: 'Yellow vomit usually means an empty stomach. Try feeding a small meal and ensure fresh water is available.', sev: 'mild', label: '🟢 Mild' },
-          white: { text: 'White foam may indicate mild indigestion or acid reflux. Offer bland food (boiled chicken & rice) for a day.', sev: 'moderate', label: '🟠 Moderate' },
-          brown: { text: 'Brown vomit may indicate a serious condition. Please seek veterinary attention immediately!', sev: 'emergency', label: '🔴 Emergency' }
+          yellow: { text: 'Yellow vomit usually means an empty stomach. Try feeding a small meal and ensure fresh water is available.', sev: 'mild', label: '<i class="fas fa-circle" style="color: #4CAF50;"></i> Mild' },
+          white: { text: 'White foam may indicate mild indigestion or acid reflux. Offer bland food (boiled chicken & rice) for a day.', sev: 'moderate', label: '<i class="fas fa-circle" style="color: #FF9800;"></i> Moderate' },
+          brown: { text: 'Brown vomit may indicate a serious condition. Please seek veterinary attention immediately!', sev: 'emergency', label: '<i class="fas fa-circle" style="color: #F44336;"></i> Emergency' }
         };
         const d = data[color];
-        html = `<div class="result-box sev-${d.sev}"><strong>${d.label}</strong><p>${d.text}</p>${d.sev === 'emergency' ? '<p class="emerg-warn">⚠️ Please visit a vet immediately!</p>' : ''}</div>`;
+        html = `<div class="result-box sev-${d.sev}"><strong>${d.label}</strong><p>${d.text}</p>${d.sev === 'emergency' ? '<p class="emerg-warn"><i class="fas fa-exclamation-triangle"></i> Please visit a vet immediately!</p>' : ''}</div>`;
       } else {
         const data = {
-          urine: { text: 'Urine changes (color, frequency, straining) can indicate UTI or kidney issues. Monitor for 24 hrs; if persists consult a vet.', sev: 'moderate', label: '🟠 Moderate' },
-          lethargy: { text: 'Mild lethargy after activity is normal. If lasting more than 24 hrs, check for fever or other symptoms and consult a vet.', sev: 'moderate', label: '🟠 Moderate' },
-          noappetite: { text: 'Skipping one meal is usually okay. If no appetite persists beyond 24 hrs or is combined with other symptoms, visit a vet.', sev: 'mild', label: '🟢 Mild' }
+          urine: { text: 'Urine changes (color, frequency, straining) can indicate UTI or kidney issues. Monitor for 24 hrs; if persists consult a vet.', sev: 'moderate', label: '<i class="fas fa-circle" style="color: #FF9800;"></i> Moderate' },
+          lethargy: { text: 'Mild lethargy after activity is normal. If lasting more than 24 hrs, check for fever or other symptoms and consult a vet.', sev: 'moderate', label: '<i class="fas fa-circle" style="color: #FF9800;"></i> Moderate' },
+          noappetite: { text: 'Skipping one meal is usually okay. If no appetite persists beyond 24 hrs or is combined with other symptoms, visit a vet.', sev: 'mild', label: '<i class="fas fa-circle" style="color: #4CAF50;"></i> Mild' }
         };
         const d = data[sym];
         html = `<div class="result-box sev-${d.sev}"><strong>${d.label}</strong><p>${d.text}</p></div>`;
@@ -310,8 +344,12 @@
       { type: 'shop', name: 'Pet Paradise Shop', rating: '4.6', address: 'Bhavanipuram, Vijayawada', status: 'open', phone: '040-4567890' },
       { type: 'clinic', name: 'RR Pet Clinic', rating: '4.7', address: 'Gunadala, Kanuru', status: 'open', phone: '09849362082' },
       { type: 'grooming', name: 'JUST PETS SPA', rating: '4.8', address: 'Polyclinic Rd, Acharya Ranga Nagar, Vijayawada', status: 'closed', phone: '09121241038' },
+      { type: 'clinic', name: 'Happy Tails Vet Care', rating: '4.9', address: 'Benz Circle, Vijayawada', status: 'open', phone: '09876543210' },
+      { type: 'boarding', name: 'Bark & Purr Stay', rating: '4.4', address: 'Labbipet, Vijayawada', status: 'open', phone: '09123456789' },
+      { type: 'shop', name: 'Woof & Meow Supplies', rating: '4.5', address: 'Patamata, Vijayawada', status: 'closed', phone: '09988776655' },
+      { type: 'grooming', name: 'The Pampered Pet', rating: '4.7', address: 'Autonagar, Vijayawada', status: 'open', phone: '09811223344' }
     ];
-    const typeIcons = { clinic: '🏥', grooming: '✂️', boarding: '🏠', shop: '🛒' };
+    const typeIcons = { clinic: '<i class="fas fa-hospital"></i>', grooming: '<i class="fas fa-cut"></i>', boarding: '<i class="fas fa-home"></i>', shop: '<i class="fas fa-shopping-cart"></i>' };
     function renderCenters() {
       const grid = document.getElementById('centersGrid');
       grid.innerHTML = centers.map(c => `
@@ -319,9 +357,9 @@
           <div class="center-icon">${typeIcons[c.type]}</div>
           <div class="center-body">
             <h4>${c.name}</h4>
-            <div class="center-rating">⭐ ${c.rating}</div>
+            <div class="center-rating"><i class="fas fa-star"></i> ${c.rating}</div>
             <p><i class="fas fa-map-marker-alt"></i> ${c.address}</p>
-            <span class="status-badge ${c.status}">${c.status === 'open' ? '🟢 Open' : '🔴 Closed'}</span>
+            <span class="status-badge ${c.status}">${c.status === 'open' ? '<i class="fas fa-circle"></i> Open' : '<i class="fas fa-circle"></i> Closed'}</span>
           </div>
           <div class="center-actions">
             <a href="https://maps.google.com?q=${encodeURIComponent(c.name+' '+c.address)}" target="_blank" class="center-btn map-btn"><i class="fas fa-map"></i> Map</a>

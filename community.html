@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Paw — Community</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* Community specific inline styles */
+    .community-feed { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+    .post-card { padding: 24px; }
+    .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .post-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 2px solid var(--primary-pastel); }
+    .post-meta h4 { font-size: 1rem; margin-bottom: 2px; }
+    .post-meta small { color: var(--text-light); font-size: 0.8rem; }
+    .post-img { width: 100%; height: 280px; border-radius: 12px; background: #E0E0E0; object-fit: cover; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-size: 3rem; }
+    .post-text { font-size: 0.95rem; margin-bottom: 16px; line-height: 1.6; }
+    .post-actions { display: flex; gap: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+    .action-btn { background: none; border: none; font-size: 0.9rem; font-weight: 700; color: var(--text-light); cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color var(--transition); }
+    .action-btn:hover { color: var(--pink-dark); }
+    .create-post { display: flex; gap: 12px; margin-bottom: 32px; }
+    .create-post input { flex: 1; border: 1.5px solid var(--border); border-radius: 50px; padding: 12px 20px; font-family: 'Quicksand'; outline: none; }
+  </style>
+</head>
+<body class="tracker-page">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><i class="fas fa-paw"></i> <span>Pet Paw</span></div>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="tracker.html"><i class="fas fa-syringe"></i> Vet Tracker</a></li>
+      <li><a href="nutrition.html"><i class="fas fa-bone"></i> Diet & Nutrition</a></li>
+      <li><a href="training.html"><i class="fas fa-dumbbell"></i> Training Guide</a></li>
+      <li><a href="community.html" class="active"><i class="fas fa-users"></i> Community</a></li>
+      <li><a href="profile.html"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+      <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+    <div class="sidebar-emergency">
+      <div class="emergency-card">
+        <p><i class="fas fa-phone-alt"></i> Emergency Vet</p>
+        <strong>+91-1800-123-4567</strong>
+        <small>24/7 Pet Hospital</small>
+        <a href="tel:+911800123456" class="emergency-btn"><i class="fas fa-phone"></i> Quick Call</a>
+      </div>
+    </div>
+  </nav>
+
+  <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <main class="main-content" id="mainContent">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="pet-avatar" id="topAvatar"><i class="fas fa-paw"></i></div>
+        <div>
+          <h2>Community <i class="fas fa-users"></i></h2>
+          <p class="topbar-sub">Connect with other pet parents</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="dark-toggle inline" id="darkToggle">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="dashboard.html" class="nav-pill"><i class="fas fa-home"></i> Dashboard</a>
+      </div>
+    </div>
+
+    <div class="community-feed">
+      
+      <!-- Create Post -->
+      <section class="dash-section fade-in" style="animation-delay: 0.1s;">
+        <div class="glass-card post-card">
+          <div class="create-post">
+            <div class="post-avatar" id="myAvatar"><i class="fas fa-paw"></i></div>
+            <input type="text" id="postInput" placeholder="Share a picture or update about your pet..."/>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 12px;">
+            <button class="action-btn" style="color: var(--brown);"><i class="fas fa-image"></i> Photo</button>
+            <button class="glow-btn sm" onclick="createPost()"><i class="fas fa-paper-plane"></i> Post</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="feedContainer">
+
+      <!-- Post 1 -->
+      <section class="dash-section fade-in" style="animation-delay: 0.2s;">
+        <div class="glass-card post-card">
+          <div class="post-header">
+            <div class="post-avatar"><i class="fas fa-dog"></i></div>
+            <div class="post-meta">
+              <h4>Sarah & Max</h4>
+              <small>2 hours ago</small>
+            </div>
+          </div>
+          <p class="post-text">Max just learned how to fetch! So proud of this good boy. <i class="fas fa-heart" style="color:#FF8FAB"></i></p>
+          <div class="post-img" style="background: linear-gradient(135deg, #FFDAC1, #FFB7B2);">
+            <i class="fas fa-camera"></i>
+          </div>
+          <div class="post-actions">
+            <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> 124</button>
+            <button class="action-btn" onclick="alert('Comments coming soon!')"><i class="far fa-comment"></i> 18</button>
+            <button class="action-btn" onclick="alert('Share options coming soon!')"><i class="fas fa-share"></i> Share</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Post 2 -->
+      <section class="dash-section fade-in" style="animation-delay: 0.3s;">
+        <div class="glass-card post-card">
+          <div class="post-header">
+            <div class="post-avatar"><i class="fas fa-cat"></i></div>
+            <div class="post-meta">
+              <h4>David & Luna</h4>
+              <small>5 hours ago</small>
+            </div>
+          </div>
+          <p class="post-text">Luna found a new favorite sleeping spot... my keyboard. Classic cat behavior.</p>
+          <div class="post-actions">
+            <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> 89</button>
+            <button class="action-btn" onclick="alert('Comments coming soon!')"><i class="far fa-comment"></i> 5</button>
+            <button class="action-btn" onclick="alert('Share options coming soon!')"><i class="fas fa-share"></i> Share</button>
+          </div>
+        </div>
+      </section>
+
+      </div> <!-- End feedContainer -->
+
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    window.onload = () => {
+      initDarkMode();
+      const type = localStorage.getItem('petType') || 'dog';
+      const photo = localStorage.getItem('petPhoto');
+      
+      if (photo) {
+        document.getElementById('topAvatar').innerHTML = `<img src="${photo}" alt="pet"/>`;
+        document.getElementById('myAvatar').innerHTML = `<img src="${photo}" alt="pet" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"/>`;
+      } else {
+        const icon = type === 'dog' ? '<i class="fas fa-dog"></i>' : '<i class="fas fa-cat"></i>';
+        document.getElementById('topAvatar').innerHTML = icon;
+        document.getElementById('myAvatar').innerHTML = icon;
+      }
+    };
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function createPost() {
+      const input = document.getElementById('postInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const name = localStorage.getItem('petName') || 'You';
+      const type = localStorage.getItem('petType') || 'dog';
+      const photo = localStorage.getItem('petPhoto');
+      
+      let iconHTML = '';
+      if (photo) {
+        iconHTML = `<img src="${photo}" alt="pet" style="width:100%; height:100%; object-fit:cover; border-radius:50%;"/>`;
+      } else {
+        iconHTML = type === 'dog' ? '<i class="fas fa-dog"></i>' : '<i class="fas fa-cat"></i>';
+      }
+      
+      const newPostHTML = `
+      <section class="dash-section fade-in">
+        <div class="glass-card post-card">
+          <div class="post-header">
+            <div class="post-avatar">${iconHTML}</div>
+            <div class="post-meta">
+              <h4>${name}</h4>
+              <small>Just now</small>
+            </div>
+          </div>
+          <p class="post-text">${text}</p>
+          <div class="post-actions">
+            <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> 0</button>
+            <button class="action-btn" onclick="alert('Comments coming soon!')"><i class="far fa-comment"></i> 0</button>
+            <button class="action-btn" onclick="alert('Share options coming soon!')"><i class="fas fa-share"></i> Share</button>
+          </div>
+        </div>
+      </section>`;
+
+      const feed = document.getElementById('feedContainer');
+      feed.insertAdjacentHTML('afterbegin', newPostHTML);
+      input.value = '';
+    }
+
+    function toggleLike(btn) {
+      const icon = btn.querySelector('i');
+      let count = parseInt(btn.textContent.trim()) || 0;
+      if (icon.classList.contains('far')) {
+        icon.classList.replace('far', 'fas');
+        icon.style.color = '#FF8FAB';
+        count++;
+      } else {
+        icon.classList.replace('fas', 'far');
+        icon.style.color = '';
+        count--;
+      }
+      btn.innerHTML = icon.outerHTML + ' ' + count;
+    }
+  </script>
+</body>
+</html>
